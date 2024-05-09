@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Data" parent="Theme.AppCompat.DayNight">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/blueAccent</item>
+        <item name="colorPrimaryVariant">@color/blueAccentDark</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Secondary brand color. -->
+        <item name="android:textColor">@color/BackgroundColorNight</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?android:attr/windowBackgroundFallback</item>
+        <item name="android:windowBackground">?android:attr/windowBackgroundFallback</item>
+        <item name="android:windowIsTranslucent">true</item>
+
+        <!--
+
+        <item name="android:windowSplashScreenBackground">#000000</item>
+
+
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/logov3</item>
+        <item name="android:windowSplashScreenAnimationDuration">1000</item>
+        -->
+
+
+
+
+    </style>
+</resources>

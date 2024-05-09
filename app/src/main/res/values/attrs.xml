@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Theme.Data">
+        <attr name="FontColor" format="color" />
+        <attr name="BackgroundColor" format="color" />
+    </declare-styleable>
+
+
+
+
+
+
+
+
+
+
+
+
+</resources>

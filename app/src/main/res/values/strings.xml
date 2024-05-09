@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Data</string>
+    <string name="wertÜbrig">Allowed data</string>
+    <string name="TextDataProMonat">Data per month</string>
+    <string name="mb">mb</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+</resources>
