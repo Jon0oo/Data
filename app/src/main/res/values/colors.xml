@@ -3,7 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="BackgroundColor">#D6CFCF</color>
-    <color name="BackgroundColorNight">#232323</color>
+    <color name="BackgroundColorNight">#000000</color>
     <color name="FontColor">#232323</color>
     <color name="dayStyle">@color/BackgroundColor</color>
 

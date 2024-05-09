@@ -1,33 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
-<animated-vector
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aapt="http://schemas.android.com/aapt">
-    <aapt:attr name="android:drawable">
-        <vector
-            android:name="vector"
-            android:width="80dp"
-            android:height="12dp"
-            android:viewportWidth="80"
-            android:viewportHeight="12">
-            <path
-                android:name="path"
-                android:pathData="M 6 6 L 74 6"
-                android:strokeColor="#e61b1b"
-                android:strokeWidth="12"
-                android:strokeLineCap="round"
-                android:fillType="evenOdd"/>
-        </vector>
-    </aapt:attr>
-    <target android:name="path">
-        <aapt:attr name="android:animation">
-            <objectAnimator
-                android:propertyName="pathData"
-                android:duration="10000"
-                android:valueFrom="M 6 6 L 74 6"
-                android:valueTo="M 6 6 L 1 6"
-                android:valueType="pathType"
-                android:interpolator="@android:anim/linear_interpolator"/>
-        </aapt:attr>
-    </target>
 
-    </animated-vector>
+
+
+        <vector
+
+            xmlns:android="http://schemas.android.com/apk/res/android"
+
+            android:name="vector"
+            android:width="1080dp"
+            android:height="1080dp"
+            android:viewportWidth="1080"
+            android:viewportHeight="1080">
+
+            <group android:name="group_1">
+                <path
+                    android:name="path"
+                    android:pathData="M 335.09 654.995 L 262.26 654.995 L 262.26 383.435 L 336.94 383.435 Q 366.26 383.435 381.07 399.705 Q 395.88 415.986 395.88 447.305 L 395.88 574.456 Q 395.88 613.025 382.38 634.005 Q 368.88 654.995 335.09 654.995 Z M 316.88 430.955 L 316.88 607.005 L 326.29 607.005 Q 341.26 607.005 341.26 592.505 L 341.26 452.406 Q 341.26 438.825 337.64 434.885 Q 334.01 430.955 322.9 430.955 L 316.88 430.955 Z M 463.46 654.995 L 410.7 654.995 L 436.93 383.435 L 529.04 383.435 L 554.81 654.995 L 503.43 654.995 L 499.57 611.176 L 466.86 611.176 L 463.46 654.995 Z M 481.05 429.716 L 470.72 567.816 L 495.4 567.816 L 483.52 429.716 L 481.05 429.716 Z M 645.07 654.995 L 590.76 654.995 L 590.76 435.586 L 558.51 435.586 L 558.51 383.435 L 677.32 383.435 L 677.32 435.586 L 645.07 435.586 L 645.07 654.995 Z M 733.79 654.995 L 681.02 654.995 L 707.25 383.435 L 799.37 383.435 L 825.14 654.995 L 773.76 654.995 L 769.9 611.176 L 737.19 611.176 L 733.79 654.995 Z M 751.38 429.716 L 741.04 567.816 L 765.73 567.816 L 753.85 429.716 L 751.38 429.716 Z"
+                    android:fillColor="#ffffff"
+                    android:strokeWidth="1"/>
+            </group>
+        </vector>

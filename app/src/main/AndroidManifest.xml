@@ -16,7 +16,7 @@
             android:name=".MainActivity"
             android:exported="false"
             android:label="@string/title_activity_splash_screen"
-            android:theme="@style/Theme.Data"/>
+            android:theme="@style/Theme.Data0"/>
 
 
         <activity

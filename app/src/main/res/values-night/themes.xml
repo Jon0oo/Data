@@ -9,7 +9,8 @@
 
         <item name="android:textColor">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" >@color/BackgroundColorNight</item>
+        <item name="android:statusBarColor" >@color/black</item>
+        <item name="android:windowBackground">#000000</item>
         <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/blueAccentDark</item>
 
         <!-- Customize your theme here. -->
