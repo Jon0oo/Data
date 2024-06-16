@@ -9,14 +9,20 @@
 
         <item name="android:textColor">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" >@color/BackgroundColorNight</item>
+        <item name="android:statusBarColor">@color/BackgroundColorNight</item>
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">@android:color/holo_green_dark</item>
 
 
+    </style>
 
+    <style name="Widget.Data.AppWidget.Container" parent="android:Widget">
+        <item name="android:id">@android:id/background</item>
+        <item name="android:background">?android:attr/colorBackground</item>
+    </style>
 
-
-
+    <style name="Widget.Data.AppWidget.InnerView" parent="android:Widget">
+        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 </resources>

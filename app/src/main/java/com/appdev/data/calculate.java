@@ -14,40 +14,22 @@ public class  calculate {
         double DaysOfMonth = 0;
         switch (currentMonth) {
             case 0:
+            case 2:
+            case 4:
+            case 6:
+            case 7:
+            case 9:
+            case 11:
                 DaysOfMonth = 31;
                 break;
             case 1:
                 DaysOfMonth = 28;
                 break;
-            case 2:
-                DaysOfMonth = 31;
-                break;
             case 3:
-                DaysOfMonth = 30;
-                break;
-            case 4:
-                DaysOfMonth = 31;
-                break;
+            case 10:
             case 5:
-                DaysOfMonth = 30;
-                break;
-            case 6:
-                DaysOfMonth = 31;
-                break;
-            case 7:
-                DaysOfMonth = 31;
-                break;
             case 8:
                 DaysOfMonth = 30;
-                break;
-            case 9:
-                DaysOfMonth = 31;
-                break;
-            case 10:
-                DaysOfMonth = 30;
-                break;
-            case 11:
-                DaysOfMonth = 31;
                 break;
         }
         int wertMbProMonatInt = 0;
@@ -58,7 +40,7 @@ public class  calculate {
 
         }
 
-        double valueDataUsed = ((wertMbProMonatInt / DaysOfMonth) * currentDay);
+        double valueDataUsed = ((wertMbProMonatInt / DaysOfMonth) * currentDay *1000);
         return valueDataUsed;
 
     }
