@@ -1,13 +1,18 @@
 package com.appdev.data;
 
 
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -21,6 +26,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.TimeZone;
@@ -96,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
                 String wertMbProMonatStartup = sharedPref.getString("wertMbProMonat", "0");
                 MbProMonat.setText(wertMbProMonatStartup);
-
+                SharedPreferences.Editor editor = sharedPref.edit();
 
 
                 // get current year month and day
@@ -111,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                SharedPreferences.Editor editor = sharedPref.edit();
+
 
 
 
@@ -162,6 +168,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+                        SharedPreferences.Editor editor2 = getSharedPreferences("widgetKey", Context.MODE_PRIVATE).edit();
+                        editor2.putString("widgetKey", String.valueOf(MbProMonat.getText()));
+                        editor2.apply();
+
+
 
 
 
@@ -200,6 +211,28 @@ public class MainActivity extends AppCompatActivity {
 
                 SharedViewModel2.setAnswer(1, String.valueOf(calcvalue2));
 
+                Intent intent = new Intent(this, MyWidgetProvider.class);
+                intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+// Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+// since it seems the onUpdate() is only fired on that:
+                int[] ids = AppWidgetManager.getInstance(getApplication())
+                        .getAppWidgetIds(new ComponentName(getApplication(), MyWidgetProvider.class));
+                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+                sendBroadcast(intent);
+
+
+
+
+
+                SharedPreferences sharedPref2 = this.getSharedPreferences("widgetKey", Context.MODE_PRIVATE);
+
+
+
 
             }
-    }
+
+
+
+
+
+            }
