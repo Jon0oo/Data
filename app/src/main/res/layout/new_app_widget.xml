@@ -14,17 +14,20 @@
 
     <TextView
         android:id="@+id/wertBisHeuteBenutztErlaubt2"
-        android:layout_width="268dp"
-        android:layout_height="239dp"
-
+        android:layout_width="2026dp"
+        android:layout_height="2851dp"
+        android:autoSizeMaxTextSize="600dp"
+        android:autoSizeMinTextSize="40dp"
+        android:autoSizeTextType="uniform"
         android:fontFamily="sans-serif-black"
         android:letterSpacing="-0.15"
         android:text="0,0"
         android:textAlignment="center"
         android:textColor="@color/blueAccent"
-        android:textScaleX="0.9"
-        android:textSize="150sp"
-        android:typeface="normal" />
+        android:textSize="150dp"
+        android:typeface="normal"
+
+        />
 
 
 </RelativeLayout>

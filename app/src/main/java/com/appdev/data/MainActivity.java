@@ -158,6 +158,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void afterTextChanged(Editable s) {
 
+                        Context context = getApplicationContext();
+
+
                         calculate Calculate = new calculate();
                         double calculatedValue = calculate.calculateDataUsage(sharedPref.getString("wertMbProMonat", null));
 
@@ -173,7 +176,11 @@ public class MainActivity extends AppCompatActivity {
                         editor2.apply();
 
 
-
+                        Intent intent = new Intent(context, MyWidgetProvider.class);
+                        intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+                        int ids[] = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), MyWidgetProvider.class));
+                        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+                        sendBroadcast(intent);
 
 
 

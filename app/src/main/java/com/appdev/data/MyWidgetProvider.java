@@ -84,6 +84,16 @@ public class MyWidgetProvider extends AppWidgetProvider {
         DecimalFormat df2 = new DecimalFormat("#.#");
         String finalDouble = df2.format(calculatedValue * 0.001);
 
+        //setting the desired font size depending on the Widget size
+
+
+
+
+
+
+
+
+
 
 
         remoteViews.setTextViewText(R.id.wertBisHeuteBenutztErlaubt2, finalDouble);
