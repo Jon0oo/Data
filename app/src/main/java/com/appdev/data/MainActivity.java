@@ -2,12 +2,15 @@ package com.appdev.data;
 
 
 import android.app.PendingIntent;
+import android.app.usage.NetworkStats;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.datastore.preferences.protobuf.StringValue;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -40,12 +44,10 @@ public class MainActivity extends AppCompatActivity {
 
 
                 //stops the UI from going upwards if keyboard is opened
-
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
 
 
                 // hides the bar at the top
-
                 Objects.requireNonNull(getSupportActionBar()).hide();
 
 
@@ -54,15 +56,21 @@ public class MainActivity extends AppCompatActivity {
                 setContentView(R.layout.activity_main);
 
 
-                //Initialize the ViewModel
 
+
+
+
+
+
+
+
+                //Initialize the ViewModel
                 SharedViewModel mainActivityViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
 
 
 
 
                 //Initialize the Pager Adapter to setup the Slider Pages
-
                 ViewPager2 viewPager = findViewById(R.id.ViewPagerSlider); // Replace with your actual ID
                 List<Fragment> fragmentList = new ArrayList<>();
                 fragmentList.add(new FragmentLeft());
@@ -77,13 +85,24 @@ public class MainActivity extends AppCompatActivity {
 
 
                 // introduce .xml objects to java
-
                 EditText MbProMonat = (EditText) findViewById(R.id.WertMbProMonat);
 
 
 
+                TextView testView = (TextView) findViewById(R.id.testView);
 
 
+
+                DataTrack dataTrack = new DataTrack(this);
+                double mobileDataUsage = dataTrack.getMobileDataUsage();
+
+                String mobileDataUsageString = String.valueOf((mobileDataUsage));
+
+
+
+                        if (mobileDataUsageString != null && mobileDataUsageString.length() > 0) {
+                            testView.setText(mobileDataUsageString);
+                        }
 
 
 
@@ -98,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
 
 
                 //introduces shared preference early to set the wertMbProMonat value at startup
-
                 SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
                 String wertMbProMonatStartup = sharedPref.getString("wertMbProMonat", "0");
                 MbProMonat.setText(wertMbProMonatStartup);
@@ -106,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
 
 
                 // get current year month and day
-
                 Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
 
                 int currentYear = calendar.get(Calendar.YEAR);
@@ -122,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+                //initialize TextWatcher to check if the user updated values. Calculation as consequence
 
                 final String[] wertMbProMonat = {"0"};
                 MbProMonat.addTextChangedListener(new TextWatcher() {

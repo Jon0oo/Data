@@ -8,6 +8,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -98,8 +99,16 @@ public class MyWidgetProvider extends AppWidgetProvider {
 
         remoteViews.setTextViewText(R.id.wertBisHeuteBenutztErlaubt2, finalDouble);
 
+        Intent intent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        remoteViews.setOnClickPendingIntent(R.id.widget_root_layout, pendingIntent);
+
+
+
         // Update the widget
         appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
+
+
 
 
 
