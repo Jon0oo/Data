@@ -1,5 +1,6 @@
 package com.appdev.data;
 
+import android.app.Activity;
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.Intent;
@@ -55,9 +56,14 @@ public class AskPerm {
             public void onClick(View v) {
                 Toast.makeText(context, "Die App funktioniert ohne diese Berechtigung nicht.", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
-                if (listener != null) listener.onPermissionDenied(); // Notify listener
+
+                // Close the app
+                if (context instanceof Activity) {
+                    ((Activity) context).finish(); // Finish the current activity
+                }
             }
         });
+
 
         dialog.show();
     }

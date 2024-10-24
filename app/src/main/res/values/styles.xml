@@ -11,7 +11,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/BackgroundColorNight</item>
         <!-- Customize your theme here. -->
-        <item name="android:windowBackground">@android:color/holo_green_dark</item>
+        <item name="android:windowBackground">@color/FontColor</item>
 
 
     </style>

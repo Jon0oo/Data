@@ -5,4 +5,10 @@
     <color name="BackgroundColorNight">#232323</color>
     <color name="blueAccent">#739AAD</color>
     <color name="blueAccentDark">#C741677A</color>
+    <color name="BackgroundColor">#000000</color>
+    <color name="roundedButtonColor">#000000</color>
+    <color name="fontColor">#FFFFFF</color>
+    <color name="invertedBackgroundColor">#FFFFFF</color>
+
+
 </resources>

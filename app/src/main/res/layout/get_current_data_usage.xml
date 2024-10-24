@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/rounded_corners_black"
+    android:backgroundTintMode="add"
+    android:minWidth="350dp"
+    android:minHeight="600dp">
+
+    <TextView
+        android:id="@+id/dialog_message"
+        android:layout_width="282dp"
+        android:layout_height="245dp"
+        android:fontFamily="sans-serif-black"
+        android:text="Bitte nutze den Button `Einstellungen´ um deinen aktuellen Datenverbrauch anzuzeigen, und gib ihn danach in das Feld ein."
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.056" />
+
+    <Button
+        android:id="@+id/btn_to_settings"
+        android:layout_width="166dp"
+        android:layout_height="53dp"
+        android:background="@drawable/rounded_corners_blue"
+        android:text="Einstellungen"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.13"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.897" />
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="109dp"
+        android:layout_height="53dp"
+        android:background="@drawable/rounded_corners_blue"
+        android:text="Okay"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.834"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.897" />
+
+    <EditText
+        android:id="@+id/TextInputField"
+        style="@style/Widget.Material3.MaterialTimePicker.Display.TextInputEditText"
+        android:layout_width="215dp"
+        android:layout_height="77dp"
+        android:breakStrategy="simple"
+        android:fontFamily="@font/anton"
+        android:hint="______"
+        android:includeFontPadding="false"
+        android:inputType="numberDecimal"
+        android:maxLength="5"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="?attr/actionMenuTextColor"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.438"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.383" />
+
+    <TextView
+        android:id="@+id/UnitDisplay"
+        android:layout_width="32dp"
+        android:layout_height="31dp"
+        android:fontFamily="@font/anton"
+        android:text="@string/Gb"
+        android:textColor="?attr/actionMenuTextColor"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.868"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.404" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
