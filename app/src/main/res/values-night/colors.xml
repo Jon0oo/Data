@@ -9,6 +9,7 @@
     <color name="roundedButtonColor">#000000</color>
     <color name="fontColor">#FFFFFF</color>
     <color name="invertedBackgroundColor">#FFFFFF</color>
+    <color name="transparent">#00000000</color>
 
 
 </resources>

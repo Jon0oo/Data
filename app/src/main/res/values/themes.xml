@@ -10,7 +10,7 @@
         <item name="android:textColor">@color/BackgroundColorNight</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">#DBD6D6</item>
-        <item name="android:windowBackground">#DCD7D7</item>
+
 
 
     </style>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_battery"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
@@ -23,7 +24,7 @@
             android:layout_width="294dp"
             android:layout_height="248dp"
             android:fontFamily="sans-serif-black"
-            android:text="To provide a functioning user experience we need to ask you for data usage tracking permission. Please use the &quot;Settings&quot; button to give permission."
+            android:text="Please disable battery optimization to allow the app to run essential tasks in the background."
             android:textAlignment="center"
             android:textColor="#ffffff"
             android:textSize="20sp"
@@ -35,7 +36,7 @@
             app:layout_constraintVertical_bias="0.276" />
 
         <Button
-            android:id="@+id/btn_go_to_settings"
+            android:id="@+id/btn_go_to_settingsB"
             android:layout_width="167dp"
             android:layout_height="59dp"
             android:background="@drawable/rounded_corners_blue"
@@ -49,7 +50,7 @@
             app:layout_constraintVertical_bias="0.9" />
 
         <Button
-            android:id="@+id/btn_decline"
+            android:id="@+id/btn_declineB"
             android:layout_width="128dp"
             android:layout_height="58dp"
             android:background="@drawable/rounded_corners_grey"

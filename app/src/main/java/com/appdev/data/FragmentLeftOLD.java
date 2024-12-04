@@ -16,7 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-public class FragmentLeft extends Fragment {
+public class FragmentLeftOLD extends Fragment {
 
     private SharedViewModel2 viewModel;
     private static final String TAG = "DEBUG_FragmentLeft";
@@ -123,14 +123,7 @@ public class FragmentLeft extends Fragment {
         SharedPreferences sharedPref = getContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
 
-        // Adjust X position based on progress thresholds
-        if (progress >= 1000) {
-            textView.setX((progressBar.getX() + progressWidth - 230)); // Adjust this value as needed
-            Log.d(TAG, "-- progress > 1000 -- set X value: " + (progressBar.getX() + progressWidth - 300));
-        } else if (progress >= 100) {
-            textView.setX((progressBar.getX() + progressWidth - 200)); // Adjust this value as needed
-            Log.d(TAG, "-- progress > 100 -- set X value: " + (progressBar.getX() + progressWidth - 200));
-        } else if (cappedProgress > 10) {
+        if (cappedProgress > 10) {
             textView.setX((progressBar.getX() + progressWidth - 170));
             Log.d(TAG, "-- bigger10 -- set X value: " + (progressBar.getX() + progressWidth - 170));
         } else {
@@ -145,5 +138,4 @@ public class FragmentLeft extends Fragment {
         editor.putInt(TEXT_VIEW_Y_KEY, (int) textView.getY());
         editor.apply();
     }
-
 }

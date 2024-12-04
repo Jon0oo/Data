@@ -1,6 +1,12 @@
 package com.appdev.data;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.app.Activity;
+import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -8,7 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -21,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -42,9 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     //for testing the update frequency of the data usage listener
-    private TextView testView;
-    private Handler handler = new Handler();
-    private Runnable runnable;
+
+
     private PermissionHandler permissionHandler;
 
 
@@ -76,14 +81,16 @@ public class MainActivity extends AppCompatActivity {
         MbProMonat.setText(wertMbProMonatStartup);
         Log.d(TAG, wertMbProMonatStartup);
         SharedPreferences.Editor editor = sharedPref.edit();
+        Activity activity = this;
 
 
         // introducing the on click listener for the three dots
         ImageView threeDots = findViewById(R.id.threeDots);
         threeDots.setOnClickListener(new View.OnClickListener() {
+            OverlayHelper overlayHelper = new OverlayHelper(activity);
              @Override
              public void onClick(View view) {
-                 showPopupWindow(view);
+                 overlayHelper.showPopupWindow(view);
                    }
              });
 
@@ -106,29 +113,13 @@ public class MainActivity extends AppCompatActivity {
 //----------------------------------testing--------------------------------------//
 
 
-        Button testButton = (Button) findViewById(R.id.testButton);
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Context context;
 
-                SharedPreferences prefs = getSharedPreferences("calculate", Context.MODE_PRIVATE);
-
-                prefs.edit().putString("installedMonth", null).apply();
-                prefs.edit().putString("installedYear", null).apply();
-                SharedPreferences prefs2 = getSharedPreferences("DataTrackingPrefs", Context.MODE_PRIVATE);
-
-                prefs2.edit().putString("userInputDataUsage", null).apply();
-
-            }
-        });
 
 
 
 
         //getting the calculated value from the calculate class
-        DataTrack dataTrack = new DataTrack(this);
-        SharedPreferences prefs = getSharedPreferences("DataTrackingPrefs", Context.MODE_PRIVATE);
+
         Context context = this;
         calculate calculateTest = new calculate();
         double calculatedValueTest = calculateTest.calculateDataAllowedDataUsedDifference(context);
@@ -146,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Initialize the Pager Adapter to setup the Slider Pages
-        ViewPager2 viewPager = findViewById(R.id.ViewPagerSlider); // Replace with your actual ID
+        ViewPager2 viewPager = findViewById(R.id.ViewPagerSlider);
         List<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(new FragmentLeft());
         fragmentList.add(new FragmentMiddle());
@@ -329,29 +320,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void showPopupWindow(View anchorView) {
-        View popupView = getLayoutInflater().inflate(R.layout.popup_layout, null);
-        final PopupWindow popupWindow = new PopupWindow(popupView,
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setFocusable(true);
 
-        // Button click listeners
-        Button button1 = popupView.findViewById(R.id.button1);
-        button1.setOnClickListener(v -> {
-            // Handle Option 1 click
-            popupWindow.dismiss();
-        });
 
-        Button button2 = popupView.findViewById(R.id.button2);
-        button2.setOnClickListener(v -> {
-            // Handle Option 2 click
-            popupWindow.dismiss();
-        });
 
-        popupWindow.showAtLocation(anchorView, Gravity.BOTTOM | Gravity.END, 30, 230);
-    }
 
 
 

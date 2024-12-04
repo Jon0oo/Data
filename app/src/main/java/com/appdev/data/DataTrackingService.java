@@ -20,7 +20,7 @@ import androidx.core.app.NotificationCompat;
 
 public class DataTrackingService extends Service {
 
-    private static final long CHECK_INTERVAL = 60000; // Check every 10 minutes
+    private static final long CHECK_INTERVAL = 600000; // Check every 10 minutes
     private static final String TAG = "DEBUG_DataTrackingService";
     private static final String CHANNEL_ID = "DataTrackingServiceChannel";
 

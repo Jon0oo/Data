@@ -3,9 +3,7 @@
     android:shape="rectangle" android:padding="10dp">
     <stroke
         android:width="2dp"
-        android:color="@color/invertedBackgroundColor"/>
-    <solid
-        android:color="#00000000"/>
-    <corners
-        android:radius="13dp"/>
+        android:color="#ffffff"/>
+    <solid android:color="#739BAE"/>
+    <corners android:radius="13dp"/>
 </shape>

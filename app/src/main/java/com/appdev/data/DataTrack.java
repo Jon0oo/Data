@@ -50,18 +50,19 @@ public class DataTrack {
         prefs.edit()
                 .putLong(STORED_DATA_KEY, totalUsage)
                 .putLong(CURRENT_DATA_KEY, 0) // Reset current usage
-                .apply();
+                .commit();
     }
 
-    // Get total usage over time
+
     public long getTotalDataUsage() {
         long currentUsageSinceLastReboot = getDataUsageSinceLastReboot();
-        long storedUsage = getStoredDataUsage(); // Method to get stored value
+        long storedUsage = getStoredDataUsage();
+        Log.d(TAG,"Total Data usage: " + String.valueOf((long) ((currentUsageSinceLastReboot + storedUsage)  / (1024.0 * 1024.0))));
         return (long) ((currentUsageSinceLastReboot + storedUsage)  / (1024.0 * 1024.0));
     }
     private long getStoredDataUsage() {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        return prefs.getLong(STORED_DATA_KEY, 0); // Replace with your key for stored usage
+        return prefs.getLong(STORED_DATA_KEY, 0);
     }
 
 }

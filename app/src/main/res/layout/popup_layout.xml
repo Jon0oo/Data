@@ -7,18 +7,21 @@
     android:padding="8dp">
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/ButtonReset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Option 1"
+        android:text="  Reset Start Input  "
+
         android:textColor="@color/invertedBackgroundColor"
-        android:background="@drawable/rounded_corners_black" />
+        android:background="@drawable/rounded_corners_black"
+        android:layout_marginBottom="8dp"/>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/ButtonExplain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Option 2"
-        android:textColor="@color/invertedBackgroundColor"
-        android:background="@drawable/rounded_corners_black"/>
+        android:background="@drawable/rounded_corners_black"
+        android:text="  Explanation  "
+
+        android:textColor="@color/invertedBackgroundColor" />
 </LinearLayout>

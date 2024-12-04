@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/dimOverlayProgressBar"
+    android:layout_height="match_parent"
+    android:background="#CC000000"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <!-- Cutout View -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/FrameLayoutTop3"
+        android:layout_width="405dp"
+        android:layout_height="185dp"
+        android:background="@drawable/rounded_corners_white"
+        android:backgroundTintMode="add"
+        android:orientation="vertical"
+        android:visibility="gone"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.022">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/FrameLayoutTop4"
+            android:layout_width="396dp"
+            android:layout_height="175dp"
+            android:background="@drawable/rounded_corners_white"
+            android:backgroundTintMode="add"
+            android:orientation="vertical"
+            android:visibility="visible"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.666"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.333">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rounded_corners_white">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/FrameLayoutTop"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rounded_corners"
+                    android:backgroundTintMode="add"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <ProgressBar
+                        android:id="@+id/ProgressBarData"
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:layout_width="385dp"
+                        android:layout_height="167dp"
+
+
+                        android:max="20"
+                        android:min="0"
+                        android:progress="10"
+                        android:progressBackgroundTint="?android:attr/statusBarColor"
+
+                        android:progressTint="@color/blueAccent"
+                        android:scaleY="1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.571"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.533" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0">
+
+
+                        <TextView
+                            android:id="@+id/usageTextView"
+                            android:layout_width="200dp"
+                            android:layout_height="60dp"
+                            android:fontFamily="@font/anton"
+                            android:text="0%"
+                            android:textSize="30sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/ProgressBarData"
+                            app:layout_constraintEnd_toEndOf="@+id/ProgressBarData"
+                            app:layout_constraintHorizontal_bias="0.631"
+                            app:layout_constraintStart_toStartOf="@+id/ProgressBarData"
+                            app:layout_constraintTop_toTopOf="@+id/ProgressBarData"
+                            app:layout_constraintVertical_bias="0.426" />
+
+
+                    </LinearLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:id="@+id/FrameLayoutTop2"
+        android:layout_width="396dp"
+        android:layout_height="175dp"
+        android:background="@drawable/rounded_corners_blue_white_border"
+        android:backgroundTintMode="add"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.022">
+
+
+        <TextView
+            android:id="@+id/textFeldBisHeuteWert"
+            android:layout_width="92dp"
+            android:layout_height="152dp"
+            android:fontFamily="@font/anton"
+            android:text="@string/wertÜbrig"
+            android:textAlignment="textStart"
+            android:textColor="?attr/actionMenuTextColor"
+            android:textSize="35sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.06"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/wertBisHeuteBenutztErlaubt2"
+            android:layout_width="150dp"
+            android:layout_height="135dp"
+            android:fontFamily="@font/anton"
+            android:text="10"
+            android:textAlignment="textEnd"
+            android:textColor="?attr/actionMenuTextColor"
+            android:textSize="65sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.715"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/textDataPerMonth"
+            android:layout_width="49dp"
+            android:layout_height="58dp"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/anton"
+            android:text="@string/Gb"
+            android:textAlignment="textStart"
+            android:textColor="?attr/actionMenuTextColor"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.846" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/instructionText"
+        android:layout_width="199dp"
+        android:layout_height="312dp"
+        android:layout_gravity="center"
+        android:fontFamily="@font/anton"
+        android:text="The progress bar helps you see how well you're managing your data usage. It uses color to show if you're on track or exceeding your monthly limit, giving you a clear picture of your current situation."
+        android:textColor="@color/invertedBackgroundColor"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.076"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.564" />
+
+    <Button
+        android:id="@+id/buttonNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corners_blue"
+        android:text="  Next  "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.916"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.965" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
