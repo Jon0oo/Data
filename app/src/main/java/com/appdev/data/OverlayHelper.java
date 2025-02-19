@@ -3,9 +3,7 @@ package com.appdev.data;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
-import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -15,12 +13,17 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
@@ -28,21 +31,28 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import java.text.DateFormatSymbols;
+import java.text.DecimalFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class OverlayHelper {
+    private SharedViewModel2 SharedViewModel2;
+
     private static final String TAG = "DEBUG_OverlayHelper";
     private Context context;
 
-    public OverlayHelper(Activity activity) {
-
-
+    public OverlayHelper(Activity activity, SharedViewModel2 viewModel) {
+        this.SharedViewModel2 = viewModel;
         this.context = activity;
     }
 
+    /**
+     * Displays the popup window with several buttons.
+     */
     public void showPopupWindow(View anchorView) {
-        // Start the pulse animation on the anchor view (the three dots)
+        // Start the pulse animation on the anchor view (e.g., a three-dot menu)
         pulseAnimation(anchorView);
-
-
 
         // Create a dialog for the popup window
         Dialog dialog = new Dialog(context);
@@ -59,6 +69,45 @@ public class OverlayHelper {
         // Show the popup window at the desired location
         popupWindow.showAtLocation(anchorView, Gravity.BOTTOM | Gravity.END, 30, 230);
 
+        // Find the buttons in the popup layout
+        Button buttonReset = popupView.findViewById(R.id.ButtonReset);
+        Button buttonExplain = popupView.findViewById(R.id.ButtonExplain);
+        Button buttonUnlimitedData = popupView.findViewById(R.id.ButtonToggleUnlimited);
+        Button buttonChangeLanguage = popupView.findViewById(R.id.ButtonChangeLanguage);
+
+        // Setting the "on" or "off" text based on SharedPreferences
+        SharedPreferences sharedPrefs = context.getSharedPreferences("UnlimitedFlag", Context.MODE_PRIVATE);
+        SpannableString spannableOff;
+        SpannableString spannableOn;
+
+// Check the device's current language
+        String currentLanguage = Locale.getDefault().getLanguage();
+
+        if (currentLanguage.equals("de")) {  // If the language is German
+            // German strings (longer)
+            spannableOff = new SpannableString("   Unbegrenzte Datenvolumen aus   ");
+            spannableOff.setSpan(new ForegroundColorSpan(Color.GREEN), 8, 10, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  // "aus" part
+
+            spannableOn = new SpannableString("   Unbegrenzte Datenvolumen an   ");
+            spannableOn.setSpan(new ForegroundColorSpan(Color.RED), 8, 10, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  // "an" part
+        } else {  // For any other language, use the original (English) strings
+            spannableOff = new SpannableString("   Turn On unlimited data   ");
+            spannableOff.setSpan(new ForegroundColorSpan(Color.GREEN), 8, 10, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  // "On" part
+
+            spannableOn = new SpannableString("   Turn Off unlimited data   ");
+            spannableOn.setSpan(new ForegroundColorSpan(Color.RED), 8, 11, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  // "Off" part
+        }
+
+        Log.d(TAG, "value: " + sharedPrefs.getString("UnlimitedFlagValue2", "off"));
+        if (sharedPrefs.getString("UnlimitedFlagValue2", "off").equals("off")) {
+            Log.d(TAG, "flag is deactive at start");
+            buttonUnlimitedData.setText(spannableOff);
+        } else if (sharedPrefs.getString("UnlimitedFlagValue2", "off").equals("on")) {
+            Log.d(TAG, "flag is active at startup");
+            buttonUnlimitedData.setText(spannableOn);
+        }
+
+
         // Animate the popup in
         popupView.setVisibility(View.VISIBLE);
         popupView.setAlpha(0f); // Start fully transparent
@@ -66,20 +115,80 @@ public class OverlayHelper {
 
         // Animate to full opacity and original position
         ObjectAnimator fadeIn = ObjectAnimator.ofFloat(popupView, "alpha", 0f, 1f);
-        ObjectAnimator slideInX = ObjectAnimator.ofFloat(popupView, "translationX", 100, 0); // Slide in from the right
-
+        ObjectAnimator slideInX = ObjectAnimator.ofFloat(popupView, "translationX", 100, 0);
         fadeIn.setDuration(250);
         slideInX.setDuration(250);
-
-        // Start the animations
         fadeIn.start();
         slideInX.start();
 
-        // Find the buttons in the popup layout
-        Button buttonReset = popupView.findViewById(R.id.ButtonReset);
-        Button buttonExplain = popupView.findViewById(R.id.ButtonExplain);
+        buttonChangeLanguage.setClickable(true);
+        buttonChangeLanguage.setOnClickListener(v -> {
+                    buttonReset.setClickable(false);
 
+            SharedPreferences sharedPrefForLang = context.getSharedPreferences("SharedPrefsLang", Context.MODE_PRIVATE);
+            Dialog dialogForLanguage = new Dialog(context);
+            
+            
+            View popupViewForLanguage = null;
+            if(sharedPrefForLang.getString("Lang","en").equals("en")) {
+                popupViewForLanguage = dialog.getLayoutInflater().inflate(R.layout.popup_layout_language_english, null);
+            }
+            else if(sharedPrefForLang.getString("lang","en").equals("de")) {
+                popupViewForLanguage = dialog.getLayoutInflater().inflate(R.layout.popup_layout_language_german, null);
+            }
+
+            
+            final PopupWindow popupWindowForLanguage = new PopupWindow(popupView,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            popupWindowForLanguage.setOutsideTouchable(true);
+            popupWindowForLanguage.setFocusable(true);
+
+            // Initially set the popup view's visibility to GONE
+            popupView.setVisibility(View.INVISIBLE);
+
+            // Show the popup window at the desired location
+            popupWindowForLanguage.showAtLocation(anchorView, Gravity.BOTTOM | Gravity.END, 30, 230);
+
+            
+
+            Button setGerman = (Button) popupViewForLanguage.findViewById(R.id.ButtonChangeLanguageDe);
+            setGerman.setClickable(true);
+            setGerman.setOnClickListener(v1 -> {
+                setGerman.setClickable(false);
+                sharedPrefForLang.edit().putString("lang", "de");
+                showPopupWindow(anchorView);
+
+            });
+
+
+            Button setEnglish = (Button) popupViewForLanguage.findViewById(R.id.ButtonChangeLanguageEn);
+            setEnglish.setClickable(true);
+            setGerman.setOnClickListener(v1 -> {
+                setEnglish.setClickable(false);
+                sharedPrefForLang.edit().putString("lang", "en");
+                showPopupWindow(anchorView);
+
+            });
+
+
+
+
+
+                });
+
+
+
+
+// Reset button click listener
+        buttonReset.setClickable(true);
         buttonReset.setOnClickListener(v -> {
+                    buttonReset.setClickable(false);
+
+
+
+
+
             // Create a custom dialog for confirmation
             Dialog customDialog = new Dialog(v.getContext());
             customDialog.setContentView(R.layout.popup_confirmation_reset);
@@ -89,9 +198,8 @@ public class OverlayHelper {
             Button confirmButton = customDialog.findViewById(R.id.ButtonConfirm);
             Button cancelButton = customDialog.findViewById(R.id.ButtonCancel);
 
-            // Set up the confirm button
+            // Confirm button: reset user data and restart the app
             confirmButton.setOnClickListener(view -> {
-                // Reset user inputted data
                 SharedPreferences prefs = context.getSharedPreferences("calculate", Context.MODE_PRIVATE);
                 prefs.edit().putString("installedMonth", null).apply();
                 prefs.edit().putString("installedYear", null).apply();
@@ -99,249 +207,546 @@ public class OverlayHelper {
                 SharedPreferences prefs2 = context.getSharedPreferences("DataTrackingPrefs", Context.MODE_PRIVATE);
                 prefs2.edit().putString("userInputDataUsage", null).apply();
 
-                // Handle the reset action here
                 toggleButtons(buttonReset, buttonExplain, false);
-
-                // Dismiss dialogs
                 customDialog.dismiss();
                 popupWindow.dismiss();
 
-                // Restart the app from the SplashScreen activity
                 Intent intent = new Intent(context, SplashScreen.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             });
 
-            // Set up the cancel button
+            // Cancel button: dismiss the confirmation dialog
             cancelButton.setOnClickListener(view -> customDialog.dismiss());
-
-            // Show the custom dialog
             customDialog.show();
         });
 
+        // Explain button now calls the internal explanation method (if used from popup)
         buttonExplain.setOnClickListener(v -> {
-            // Access the main activity's root view
+
+            SharedPreferences sharedPrefForExplainFlag = context.getSharedPreferences("isExplaining", Context.MODE_PRIVATE);
+            sharedPrefForExplainFlag.edit().putBoolean("isExplaining", true).apply();
+            Log.d(TAG,"is Explaining is: " + sharedPrefForExplainFlag.getBoolean("isExplaining", false));
 
 
-            View rootView = ((Activity) context).findViewById(R.id.layout1);
-            if (isDayMode()) {
-                setStatusBarColor(Color.argb(0.8F, 0.0F, 0.0F, 0.0F)); // Replace with your color
-            }
-
-            // Access the included layout for the overlay
-            View dimmedOverlayDataPerMonth = rootView.findViewById(R.id.dimOverlayDataPerMonth);
-            TextView textViewOverlay = dimmedOverlayDataPerMonth.findViewById(R.id.cutoutTextView);
-
-            // Get data from shared preferences
-            SharedPreferences sharedPref = context.getSharedPreferences("calculate", Context.MODE_PRIVATE);
-            float wertMbProMonatStartup = sharedPref.getFloat("wertMbProMonat", 0);
-            int wertMbProMonatStartupInt = (int) wertMbProMonatStartup;
-
-            textViewOverlay.setText(String.valueOf(wertMbProMonatStartupInt));
-
-            // Set initial visibility and alpha
-            dimmedOverlayDataPerMonth.setVisibility(View.VISIBLE);
-            dimmedOverlayDataPerMonth.setAlpha(0f); // Start completely transparent
-
-            // Fade in animation
-            dimmedOverlayDataPerMonth.animate()
-                    .alpha(1f) // Fade to fully visible
-                    .setDuration(300);
-
-            Log.d(TAG, "set visibility to visible");
-
-            // Optionally toggle button states
+            Boolean isFirstStartup = false;
+            showExplanation(isFirstStartup);
             toggleButtons(buttonReset, buttonExplain, false);
-
-            // Dismiss the popup window
             popupWindow.dismiss();
 
-            // Close the dimmed overlay when clicking on it
-            dimmedOverlayDataPerMonth.setOnClickListener(v1 -> {
-                dimmedOverlayDataPerMonth.animate()
-                        .alpha(0f) // Fade to transparent
-                        .setDuration(300)
-                        .withEndAction(() -> dimmedOverlayDataPerMonth.setVisibility(View.GONE)); // Set GONE at the end
-
-                if (isDayMode()) {
-                    // Get the current status bar color (starting color)
-                    int startColor = ((Activity) context).getWindow().getStatusBarColor();
-
-                    // Define the target color (end color)
-                    int endColor = Color.argb(0.8F, 0.0F, 0.0F, 0.0F); // Replace with your target color
-
-                    // Create a ValueAnimator to animate between the start and end color
-                    ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), startColor, endColor);
-                    colorAnimation.setDuration(300); // Duration for the animation (same as your fade duration)
-
-                    // Add a listener to update the status bar color as the animation progresses
-                    colorAnimation.addUpdateListener(animator -> {
-                        int animatedColor = (int) animator.getAnimatedValue();
-                        // Set the animated color to the status bar
-                        ((Activity) context).getWindow().setStatusBarColor(animatedColor);
-                    });
-
-                    // Start the animation
-                    colorAnimation.start();
-                }
-
-            });
 
 
-            // Setup button for next overlay
-            Button buttonNext = dimmedOverlayDataPerMonth.findViewById(R.id.buttonNext);
-            buttonNext.setOnClickListener(v2 -> {
-
-                //getting rid of the first explaining layout
-                dimmedOverlayDataPerMonth.animate()
-                        .alpha(0f) // Fade to transparent
-                        .setDuration(300)
-                        .withEndAction(() -> {
-                            dimmedOverlayDataPerMonth.setVisibility(View.GONE);});
-
-
-                //creating teh second explaining layout
-                View dimmedOverlayDataLeft = rootView.findViewById(R.id.dimOverlayDataLeft);
-                dimmedOverlayDataLeft.setVisibility(View.VISIBLE);
-                dimmedOverlayDataLeft.setAlpha(0f); // Start fully transparent
-                dimmedOverlayDataLeft.animate()
-                        .alpha(1f)
-                        .setDuration(300);
-                            // Show the next overlay
-
-                //let the nextbutton wiggle if pressed
-
-
-
-
-                SharedPreferences sharedPref2 = context.getSharedPreferences("widgetKey", Context.MODE_PRIVATE);
-                String sharedPrefValue = sharedPref2.getString("widgetKey", "0");
-                TextView textView = dimmedOverlayDataLeft.findViewById(R.id.wertBisHeuteBenutztErlaubt2);
-                textView.setText(sharedPrefValue);
-
-
-
-
-                dimmedOverlayDataLeft.setOnClickListener(v1 -> {
-                    dimmedOverlayDataLeft.animate()
-                            .alpha(0f) // Fade to transparent
-                            .setDuration(300)
-                            .withEndAction(() -> dimmedOverlayDataLeft.setVisibility(View.GONE)); // Set GONE at the end
-                });
-
-                Button buttonNext2 = dimmedOverlayDataLeft.findViewById(R.id.buttonNext);
-                buttonNext2.setOnClickListener(v3 -> {
-                    dimmedOverlayDataLeft.animate()
-                            .alpha(0f) // Fade to transparent
-                            .setDuration(300)
-                            .withEndAction(() -> {
-                                dimmedOverlayDataLeft.setVisibility(View.GONE); // Set GONE at the end
-                            });
-
-                    View dimmedOverlayProgressBar = rootView.findViewById(R.id.dimOverlayProgressBar);
-                    dimmedOverlayProgressBar.setVisibility(View.VISIBLE);
-                    dimmedOverlayProgressBar.setAlpha(0f); // Start fully transparent
-                    dimmedOverlayProgressBar.animate()
-                            .alpha(1f)
-                            .setDuration(300);
-
-                    TextView textView2 = dimmedOverlayProgressBar.findViewById(R.id.wertBisHeuteBenutztErlaubt2);
-                    textView2.setText(sharedPrefValue);
-                    SharedPreferences sharedPref3 = context.getSharedPreferences("FragmentLeftKey", Context.MODE_PRIVATE);
-                    int calcValue = sharedPref3.getInt("ProgressInt", 0);
-                    int absoluteValue = Math.abs(calcValue);
-                    ProgressBar progressBar = dimmedOverlayProgressBar.findViewById(R.id.ProgressBarData);
-                    progressBar.setProgress(absoluteValue);
-
-                    ConstraintLayout frameLayoutTopNew4 = dimmedOverlayProgressBar.findViewById(R.id.FrameLayoutTop3);
-                    ConstraintLayout frameLayoutTopOld2 = dimmedOverlayProgressBar.findViewById(R.id.FrameLayoutTop2);
-                    ConstraintLayout frameLayoutTop4 = dimmedOverlayProgressBar.findViewById(R.id.FrameLayoutTop);
-
-                    // Set progress bar color based on calcValue
-                    if (calcValue < 0) {
-                        progressBar.setProgressTintList(ColorStateList.valueOf(Color.rgb(191, 64, 72)));
-                        frameLayoutTop4.setBackgroundResource(R.drawable.rounded_corners_red);
-                    } else {
-                        progressBar.setProgressTintList(ColorStateList.valueOf(Color.rgb(19, 174, 75)));
-                        frameLayoutTop4.setBackgroundResource(R.drawable.rounded_corners_green);
-                    }
-
-                    TextView usageTextView = dimmedOverlayProgressBar.findViewById(R.id.usageTextView);
-                    usageTextView.setText(absoluteValue + "%");
-
-                    // Restore text position from preferences
-                    usageTextView.setX(sharedPref3.getInt("textView.setXX", 0));
-                    usageTextView.setY(sharedPref3.getInt("textView.setYY", 0));
-
-                    // Step 1: Animate frameLayoutTopNew4 out to the left
-                    ObjectAnimator translateOutAnimator = ObjectAnimator.ofFloat(frameLayoutTopNew4, "translationX", 0f, (-frameLayoutTopNew4.getWidth() * 2));
-                    translateOutAnimator.setDuration(100); // Duration for moving out
-
-                    // Step 2: Animate frameLayoutTopOld2 and frameLayoutTopNew4 in after frameLayoutTopNew4 is moved out
-                    translateOutAnimator.addListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            // Make frameLayoutTopNew4 visible and start off-screen to the left
-                            frameLayoutTopNew4.setVisibility(View.VISIBLE);
-                            frameLayoutTopNew4.setTranslationX(-frameLayoutTopNew4.getWidth());
-
-                            // Step 3: Move frameLayoutTopOld2 and frameLayoutTopNew4 to the right
-                            ObjectAnimator translateOldOutAnimator = ObjectAnimator.ofFloat(frameLayoutTopOld2, "translationX", 0f, frameLayoutTopOld2.getWidth() + 50); // Move further to the right
-                            ObjectAnimator translateNewInAnimator = ObjectAnimator.ofFloat(frameLayoutTopNew4, "translationX", -frameLayoutTopNew4.getWidth(), 0f);
-
-                            // Set the same duration for both animations
-                            translateOldOutAnimator.setDuration(500);
-                            translateNewInAnimator.setDuration(500);
-
-                            // Use interpolator for smoother transitions
-                            translateOldOutAnimator.setInterpolator(new DecelerateInterpolator());
-                            translateNewInAnimator.setInterpolator(new DecelerateInterpolator());
-
-                            // Start both animations simultaneously
-                            AnimatorSet animatorSet = new AnimatorSet();
-                            animatorSet.play(translateOldOutAnimator).with(translateNewInAnimator);
-                            animatorSet.start();
-                        }
-                    });
-
-                    // Start the first animation
-                    translateOutAnimator.start();
-
-                    // Make dimmedOverlayProgressBar visible and handle click
-                    dimmedOverlayProgressBar.setOnClickListener(v1 -> {
-                        dimmedOverlayProgressBar.animate()
-                                .alpha(0f) // Fade to transparent
-                                .setDuration(300)
-                                .withEndAction(() -> dimmedOverlayProgressBar.setVisibility(View.GONE)); // Set GONE at the end
-                    });
-
-
-
-
-
-
-                    // next explanation slide here
-
-
-
-
-                });
-
-
-
-
-
-
-            });
         });
 
-        // Dismiss listener for the popup window
+        // Unlimited data toggle button click listener
+        buttonUnlimitedData.setOnClickListener(v -> {
+            Log.d(TAG, "Pressed");
+            Log.d(TAG, sharedPrefs.getString("UnlimitedFlagValue2", "off"));
+
+
+            //turning the unlimited mode on
+            if (sharedPrefs.getString("UnlimitedFlagValue2", "off").equals("off")) {
+                sharedPrefs.edit().putString("UnlimitedFlagValue2", "on").apply();
+                SharedViewModel3.setAnswer(1, "on");
+                calculate.calculateDataAllowedDataUsedDifference(context);
+                Log.d(TAG,"flag is: " + sharedPrefs.getString("UnlimitedFlagValue2", "off"));
+
+                calculate calculate = new calculate();
+                double calculatedValue = calculate.calculateDataAllowedDataUsedDifference(context);
+                DecimalFormat df = new DecimalFormat("#.##");
+                String calculatedValueDecimalFormat = df.format(calculatedValue * 0.001);
+                SharedViewModel.setAnswer(1, calculatedValueDecimalFormat);
+
+
+                SharedViewModel2.setAnswer(2, sharedPrefs.getString("UnlimitedFlagValue2", "off"));
+
+                SharedPreferences sharedPref2 = context.getSharedPreferences("widgetKey", Context.MODE_PRIVATE);
+                sharedPref2.edit().putString("widgetKey",calculatedValueDecimalFormat).apply();
+
+
+                Log.d(TAG, "flag is now active");
+                buttonUnlimitedData.setText(spannableOn);
+                Boolean FlagUnlimited = true;
+                UnlimitedDataHandler.handleFlagChange(FlagUnlimited);
+                Log.d(TAG, String.valueOf(spannableOn));
+
+                //turning the unlimited mode off
+            } else if (sharedPrefs.getString("UnlimitedFlagValue2", "off").equals("on")) {
+                sharedPrefs.edit().putString("UnlimitedFlagValue2", "off").apply();
+                SharedViewModel3.setAnswer(1, "off");
+
+                calculate.calculateDataAllowedDataUsedDifference(context);
+                Log.d(TAG,"flag is: " + sharedPrefs.getString("UnlimitedFlagValue2", "off"));
+
+                calculate calculate = new calculate();
+                double calculatedValue = calculate.calculateDataAllowedDataUsedDifference(context);
+                DecimalFormat df = new DecimalFormat("#.##");
+                String calculatedValueDecimalFormat = df.format(calculatedValue * 0.001);
+                SharedViewModel.setAnswer(1, calculatedValueDecimalFormat);
+
+                SharedViewModel2.setAnswer(1, calculatedValueDecimalFormat);
+
+                SharedPreferences sharedPref2 = context.getSharedPreferences("widgetKey", Context.MODE_PRIVATE);
+                sharedPref2.edit().putString("widgetKey",calculatedValueDecimalFormat).apply();
+
+                Boolean FlagUnlimited = false;
+                Log.d(TAG, "flag is now deactive");
+                buttonUnlimitedData.setText(spannableOff);
+            }
+        });
+
+        // Optional: add any additional popup dismiss logic here.
         popupWindow.setOnDismissListener(() -> {
-            // Optionally, you can also add an animation for the popup itself if needed
+            // You can add an animation for the popup itself if needed.
         });
     }
 
-    // Method to animate buttons in and out
+
+
+
+
+    // Internal method used by the popup's "Explain" button.
+    public void showExplanation(Boolean isFirstStartup) {
+        SharedPreferences sharedPrefForExplain = context.getSharedPreferences("UnlimitedFlag", Context.MODE_PRIVATE);
+
+        View rootView = ((Activity) context).findViewById(R.id.layout1);
+        EditText EditTextRootView = (EditText) rootView.findViewById(R.id.WertMbProMonat);
+        EditTextRootView.setFocusable(false);
+
+        // Optionally change the status bar color in Day Mode.
+        if (isDayMode()) {
+            setStatusBarColor(Color.argb(0.8F, 0, 0, 0));
+        }
+
+        // Determine which overlay layout to use based on the flag.
+        View dimmedOverlayDataPerMonth;
+        if (sharedPrefForExplain.getString("UnlimitedFlagValue2", "off").equals("off")) {
+            dimmedOverlayDataPerMonth = rootView.findViewById(R.id.dimOverlayDataPerMonth);
+            Log.d(TAG, "Flag is off, layout set to basic");
+        } else {
+            dimmedOverlayDataPerMonth = rootView.findViewById(R.id.dimOverlayDataPerMonthUnlimited);
+            Log.d(TAG, "Flag is on, layout set to unlimited");
+        }
+
+        // Update the overlay text if necessary.
+        if (sharedPrefForExplain.getString("UnlimitedFlagValue2", "off").equals("off")) {
+            TextView textViewOverlay = dimmedOverlayDataPerMonth.findViewById(R.id.cutoutTextView);
+            SharedPreferences sharedPref = context.getSharedPreferences("calculate", Context.MODE_PRIVATE);
+            float wertMbProMonatStartup = sharedPref.getFloat("wertMbProMonat", 0);
+            int wertMbProMonatStartupInt = (int) wertMbProMonatStartup;
+            textViewOverlay.setText(String.valueOf(wertMbProMonatStartupInt));
+        }
+
+        // Animate the overlay in.
+        dimmedOverlayDataPerMonth.setVisibility(View.VISIBLE);
+        dimmedOverlayDataPerMonth.setAlpha(0f);
+        dimmedOverlayDataPerMonth.animate()
+                .alpha(1f)
+                .setDuration(300);
+        Log.d(TAG, "set visibility to visible");
+
+
+
+//        // Allow the overlay to be dismissed on click.
+//        dimmedOverlayDataPerMonth.setOnClickListener(v1 -> {
+//            dimmedOverlayDataPerMonth.animate()
+//                    .alpha(0f)
+//                    .setDuration(300)
+//                    .withEndAction(() -> dimmedOverlayDataPerMonth.setVisibility(View.GONE));
+//            if (isDayMode()) {
+//                int startColor = ((Activity) context).getWindow().getStatusBarColor();
+//                int endColor = Color.argb(0.8F, 0, 0, 0);
+//                ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), startColor, endColor);
+//                colorAnimation.setDuration(300);
+//                colorAnimation.addUpdateListener(animator -> {
+//                    int animatedColor = (int) animator.getAnimatedValue();
+//                    ((Activity) context).getWindow().setStatusBarColor(animatedColor);
+//                });
+//                colorAnimation.start();
+//            }
+//        });
+
+
+
+
+
+
+        // Setup the "next" button for the first explanation overlay.
+        Button buttonNext = dimmedOverlayDataPerMonth.findViewById(R.id.buttonNext);
+
+        buttonNext.setClickable(true);
+        buttonNext.setOnClickListener(v2 -> {
+            buttonNext.setClickable(false);
+
+
+            // Fade out the first overlay.
+            dimmedOverlayDataPerMonth.animate()
+                    .alpha(0f)
+                    .setDuration(300)
+                    .withEndAction(() -> dimmedOverlayDataPerMonth.setVisibility(View.GONE));
+
+            // Get the next overlay layout.
+            View dimmedOverlayDataLeft;
+            if (sharedPrefForExplain.getString("UnlimitedFlagValue2", "off").equals("off")) {
+                dimmedOverlayDataLeft = rootView.findViewById(R.id.dimOverlayDataLeft);
+            } else {
+                dimmedOverlayDataLeft = rootView.findViewById(R.id.dimOverlayDataLeftUnlimited);
+            }
+
+            // Animate the next overlay in.
+
+            dimmedOverlayDataLeft.setVisibility(View.VISIBLE);
+
+            dimmedOverlayDataLeft.setAlpha(0f);
+            TextView textViewDataLeftValueFromProgressBarSlide = dimmedOverlayDataLeft.findViewById(R.id.wertBisHeuteBenutztErlaubt2);
+            dimmedOverlayDataLeft.setTranslationX(0f);
+            textViewDataLeftValueFromProgressBarSlide.setTranslationX(0f);
+            textViewDataLeftValueFromProgressBarSlide.setTranslationY(0f);
+            dimmedOverlayDataLeft.animate()
+                    .alpha(1f)
+                    .setDuration(300);
+
+
+            TextView textView = dimmedOverlayDataLeft.findViewById(R.id.wertBisHeuteBenutztErlaubt2);
+            SharedPreferences sharedPref2 = context.getSharedPreferences("widgetKey", Context.MODE_PRIVATE);
+            String sharedPrefValue = sharedPref2.getString("widgetKey", "0");
+            // Update any text values from SharedPreferences.
+            if (isFirstStartup){
+                textView.setText("6.9");
+            }
+            else {
+                textView.setText(sharedPrefValue);
+            }
+
+//
+
+            // Setup the next button for this overlay.
+            Button buttonNext2 = dimmedOverlayDataLeft.findViewById(R.id.buttonNext);
+            buttonNext2.setClickable(true);
+            buttonNext2.setOnClickListener(v3 -> {
+                buttonNext2.setClickable(false);
+
+
+
+
+
+
+                dimmedOverlayDataLeft.animate()
+                                .alpha(0f)
+                                .setDuration(300)
+                                .withEndAction(() -> dimmedOverlayDataLeft.setVisibility(View.GONE));
+
+                        // Show the progress bar overlay.
+                        View dimmedOverlayProgressBar;
+                        if (sharedPrefForExplain.getString("UnlimitedFlagValue2", "off").equals("off")) {
+                            dimmedOverlayProgressBar = rootView.findViewById(R.id.dimOverlayProgressBar);
+                        } else {
+                            dimmedOverlayProgressBar = rootView.findViewById(R.id.dimOverlayProgressBarUnlimited);
+                        }
+
+                        dimmedOverlayProgressBar.setVisibility(View.VISIBLE);
+                        dimmedOverlayProgressBar.setAlpha(0f);
+                        dimmedOverlayProgressBar.animate()
+                                .alpha(1f)
+                                .setDuration(300);
+
+
+
+                        SharedPreferences sharedPref3 = context.getSharedPreferences("FragmentLeftKey", Context.MODE_PRIVATE);
+
+
+
+
+
+                        ConstraintLayout frameLayoutTopNew4 = dimmedOverlayProgressBar.findViewById(R.id.FrameLayoutTop3);
+                        ConstraintLayout frameLayoutTopOld2 = dimmedOverlayProgressBar.findViewById(R.id.FrameLayoutTop2);
+                        ConstraintLayout frameLayoutTop4 = dimmedOverlayProgressBar.findViewById(R.id.FrameLayoutTop);
+
+
+
+
+
+                        progressBarSetterLeft(dimmedOverlayProgressBar, sharedPrefValue, isFirstStartup);
+
+                        // Animate the progress bar elements.
+
+                        frameLayoutTopOld2.setTranslationX(0f);
+                        textViewDataLeftValueFromProgressBarSlide.setTranslationX(0f);
+                        ObjectAnimator translateOutAnimator = ObjectAnimator.ofFloat(frameLayoutTopNew4, "translationX", 0f, (-frameLayoutTopNew4.getWidth() * 2));
+                        translateOutAnimator.setDuration(100);
+                        translateOutAnimator.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                frameLayoutTopNew4.setVisibility(View.VISIBLE);
+                                frameLayoutTopNew4.setTranslationX(-frameLayoutTopNew4.getWidth());
+
+                                ObjectAnimator translateOldOutAnimator = ObjectAnimator.ofFloat(frameLayoutTopOld2, "translationX", 0f, frameLayoutTopOld2.getWidth() + 50);
+                                ObjectAnimator translateNewInAnimator = ObjectAnimator.ofFloat(frameLayoutTopNew4, "translationX", -frameLayoutTopNew4.getWidth(), 0f);
+                                translateOldOutAnimator.setDuration(500);
+                                translateNewInAnimator.setDuration(500);
+                                translateOldOutAnimator.setInterpolator(new DecelerateInterpolator());
+                                translateNewInAnimator.setInterpolator(new DecelerateInterpolator());
+                                AnimatorSet animatorSet = new AnimatorSet();
+                                animatorSet.play(translateOldOutAnimator).with(translateNewInAnimator);
+                                animatorSet.start();
+                            }
+                        });
+                        translateOutAnimator.start();
+
+//                // Allow the progress bar overlay to be dismissed on click.
+//                dimmedOverlayProgressBar.setOnClickListener(v1 -> {
+//                    dimmedOverlayProgressBar.animate()
+//                            .alpha(0f)
+//                            .setDuration(300)
+//                            .withEndAction(() -> dimmedOverlayProgressBar.setVisibility(View.GONE));
+//                });
+
+
+                        //getting right fragment view and transitioning from progressBar to dayMonth layout
+                        View dimmedOverlayDayMonth = rootView.findViewById(R.id.dimOverlayDayMonth);
+                        Button buttonNextProgressBar = dimmedOverlayProgressBar.findViewById(R.id.buttonNext);
+
+
+
+
+                    buttonNextProgressBar.setClickable(true);
+                    buttonNextProgressBar.setOnClickListener(v4 -> {
+                        buttonNextProgressBar.setClickable(false);
+
+
+                        Boolean isFirstStartupExplanationAborted = false;
+                        sharedPrefForExplain.edit().putBoolean("isFirstStartupExplanationAborted",isFirstStartupExplanationAborted).apply();
+
+
+
+                            dimmedOverlayProgressBar.animate()
+                                    .alpha(0f)
+                                    .setDuration(300)
+                                    .withEndAction(() -> dimmedOverlayProgressBar.setVisibility(View.GONE));
+
+
+                            dimmedOverlayDayMonth.setVisibility(View.VISIBLE);
+
+                            dimmedOverlayDayMonth.setAlpha(0f);
+                            dimmedOverlayDayMonth.animate()
+                                    .alpha(1f)
+                                    .setDuration(300);
+                            Button buttonFinish = (Button) dimmedOverlayDayMonth.findViewById(R.id.buttonNext3);
+                            buttonFinish.setActivated(false);
+                            buttonFinish.setVisibility(View.INVISIBLE);
+
+
+
+                            //introducing constrained layouts
+                            ConstraintLayout frameLayoutProgressBarLeft = dimmedOverlayDayMonth.findViewById(R.id.FrameLayoutProgressBarLeft);
+                            ConstraintLayout frameLayoutDataLeft = dimmedOverlayDayMonth.findViewById(R.id.FrameLayoutDataLeft);
+                            ConstraintLayout frameLayoutBlueBoxMonth = dimmedOverlayDayMonth.findViewById(R.id.FrameLayoutBlueBoxMonth);
+
+
+
+
+                            dimmedOverlayDayMonth.post(new Runnable() {
+                                @Override
+                                public void run() {
+
+
+                                    // First slide setup
+                                    frameLayoutProgressBarLeft.setVisibility(View.VISIBLE);
+                                    frameLayoutDataLeft.setVisibility(View.VISIBLE);
+
+                                    // Set initial position (off-screen to the right)
+                                    frameLayoutDataLeft.setTranslationX(frameLayoutDataLeft.getWidth());
+
+
+                                    //Fill frameLayoutDataLeft with data
+                                    // SharedPreferences sharedPref2 = context.getSharedPreferences("widgetKey", Context.MODE_PRIVATE);
+                                    String sharedPrefValue = sharedPref2.getString("widgetKey", "0");
+                                    TextView textView = dimmedOverlayDayMonth.findViewById(R.id.wertBisHeuteBenutztErlaubt2);
+                                    textView.setText(sharedPrefValue);
+
+
+
+                                    // Animate frameLayoutDataLeft into view
+                                    frameLayoutDataLeft.animate()
+                                            .translationX(0f)
+                                            .setDuration(650)  // duration in milliseconds
+                                            .setInterpolator(new AccelerateDecelerateInterpolator())
+                                            .start();
+
+                                    // Animate frameLayoutProgressBarLeft off-screen
+                                    frameLayoutProgressBarLeft.animate()
+                                            .translationX(-frameLayoutProgressBarLeft.getWidth())
+                                            .setDuration(350)  // duration in milliseconds
+                                            .setInterpolator(new AccelerateDecelerateInterpolator())
+                                            .withEndAction(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    frameLayoutProgressBarLeft.setVisibility(View.INVISIBLE);
+                                                }
+                                            })
+                                            .start();
+                                }
+                            });
+
+                            // Delay the second slide animation by 2000ms to ensure the first animation completes
+                            // Disable the button at the beginning
+
+
+                            dimmedOverlayDayMonth.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // Show and set up the blue box
+                                    frameLayoutBlueBoxMonth.setVisibility(View.VISIBLE);
+                                    frameLayoutBlueBoxMonth.setTranslationX(frameLayoutBlueBoxMonth.getWidth());
+
+
+                                    //TODO fill month with data
+                                    TextView textViewMonth = frameLayoutBlueBoxMonth.findViewById(R.id.textViewMonth);
+                                    TextView textViewDate = frameLayoutBlueBoxMonth.findViewById(R.id.textViewDate);
+                                    ProgressBar progressForMonth = frameLayoutBlueBoxMonth.findViewById(R.id.ProgressBarMonth);
+                                    TextView percentageTextView = frameLayoutBlueBoxMonth.findViewById(R.id.textViewPercentage); // Text above progress bar
+
+                                    Calendar calendar = Calendar.getInstance();
+                                    int day = calendar.get(Calendar.DAY_OF_MONTH);
+                                    int month = calendar.get(Calendar.MONTH); // 0-based, so no +1
+                                    int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+                                    // Get the month name instead of the number
+                                    String monthName = new DateFormatSymbols().getMonths()[month];
+
+                                    textViewMonth.setText(monthName);
+                                    textViewDate.setText(day + "."); // Append a dot after the day
+
+                                    // Calculate progress percentage
+                                    float progressPercent = ((float) day / daysInMonth) * 100;
+                                    int progressForBar = Math.round(progressPercent);
+
+                                    progressForMonth.setProgress(progressForBar);
+                                    percentageTextView.setText(progressForBar + "%");
+
+                                    int width = progressForMonth.getWidth();
+                                    Log.d(TAG, "ProgressBar width: " + width);
+
+                                    if (width == 0) {
+                                        Log.e(TAG, "Width is 0, skipping position adjustment.");
+                                        return;
+                                    }
+
+                                    // Scale progress for range 0-100
+                                    int cappedProgress = Math.min(progressForBar, 100);
+                                    int progressWidth = (int) ((cappedProgress / 100.0) * width);
+
+                                    Log.d(TAG, "Progress: " + progressForBar);
+                                    Log.d(TAG, "CappedProgress: " + cappedProgress);
+                                    Log.d(TAG, "ProgressWidth: " + progressWidth);
+
+                                    // Adjust X position based on progress thresholds
+                                    if (progressForBar >= 90) {
+                                        textView.setX(progressForMonth.getX() + width - 185); // Stops at 90%
+                                        Log.d(TAG, "-- progress >= 90 -- Locked X value.");
+                                    } else if (progressForBar >= 60) {
+                                        textView.setX(progressForMonth.getX() + progressWidth - 185); // Left side of indicator
+                                        Log.d(TAG, "-- progress >= 60 -- Text left of indicator.");
+                                    } else {
+                                        textView.setX(progressForMonth.getX() + progressWidth + 30); // Right side of indicator
+                                        Log.d(TAG, "-- progress < 60 -- Text right of indicator.");
+                                    }
+
+
+                                    textView.setY(progressForMonth.getY() + (progressForMonth.getHeight() - textView.getHeight()) / 2);
+
+
+
+
+                                    //TODO fill month with data
+
+
+                                    // Animate frameLayoutBlueBoxMonth (sliding in)
+                                    frameLayoutBlueBoxMonth.animate()
+                                            .translationX(0f)
+                                            .setDuration(650)
+                                            .setInterpolator(new AccelerateDecelerateInterpolator())
+                                            .withEndAction(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    // Once this animation completes, enable the button
+                                                    Button buttonFinish = (Button) dimmedOverlayDayMonth.findViewById(R.id.buttonNext3);
+                                                    buttonFinish.setVisibility(View.VISIBLE);
+                                                    buttonFinish.setActivated(true);
+
+                                                }
+                                            })
+                                            .start();
+
+                                    // Animate frameLayoutDataLeft (sliding out)
+                                    frameLayoutDataLeft.animate()
+                                            .translationX(-frameLayoutDataLeft.getWidth())
+                                            .setDuration(350)
+                                            .setInterpolator(new AccelerateDecelerateInterpolator())
+                                            .withEndAction(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    frameLayoutDataLeft.setVisibility(View.INVISIBLE);
+                                                }
+                                            })
+                                            .start();
+                                }
+                            }, 750);
+
+
+
+
+
+
+
+
+
+                    //animating the transition from progress bar to data left to month day
+
+
+                });
+                // next explain slide here
+                // Setup the next button for this overlay.
+
+
+
+
+
+                Button buttonNext3 = dimmedOverlayDayMonth.findViewById(R.id.buttonNext3);
+
+                buttonNext3.setClickable(true);
+                buttonNext3.setOnClickListener(v4 -> {
+                    buttonNext3.setClickable(false);
+
+                    SharedPreferences sharedPrefForExplainFlag = context.getSharedPreferences("isExplaining", Context.MODE_PRIVATE);
+
+
+                    sharedPrefForExplainFlag.edit().putBoolean("isExplaining", false).apply();
+                    EditTextRootView.setFocusable(true);
+                    EditTextRootView.setFocusableInTouchMode(true);
+
+
+                        Log.d(TAG, "EditTextRootView is: " + EditTextRootView.getFocusable());
+
+
+                    ConstraintLayout layoutTempForInvisibility2 = (ConstraintLayout) dimmedOverlayDayMonth.findViewById(R.id.FrameLayoutDataLeft);
+                    layoutTempForInvisibility2.setVisibility(View.INVISIBLE);
+                    ConstraintLayout layoutTempForInvisibility = (ConstraintLayout) dimmedOverlayDayMonth.findViewById(R.id.FrameLayoutBlueBoxMonth);
+                    layoutTempForInvisibility.setVisibility(View.INVISIBLE);
+                    dimmedOverlayDayMonth.animate()
+                                .alpha(0f)
+                                .setDuration(300)
+                                .withEndAction(() -> dimmedOverlayDayMonth.setVisibility(View.GONE));
+
+                });
+
+            });
+        });
+    }
+
+    /**
+     * Animates two buttons simultaneously.
+     */
     private void toggleButtons(View button1, View button2, boolean show) {
         float targetAlpha = show ? 1f : 0f;
         float targetTranslationY = show ? 0 : 100; // Adjust as needed for slide effect
@@ -375,40 +780,120 @@ public class OverlayHelper {
         fadeInOut2.start();
         slide2.start();
     }
+
+    /**
+     * Checks if the device is in Day Mode (Light Mode).
+     */
     private boolean isDayMode() {
-        // Check if the device is in Day Mode (Light Mode)
         int currentMode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        return currentMode == Configuration.UI_MODE_NIGHT_NO; // Day mode
+        return currentMode == Configuration.UI_MODE_NIGHT_NO;
     }
 
+    /**
+     * Sets the status bar color.
+     */
     private void setStatusBarColor(int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // Use the Window object to change the status bar color
             Window window = ((Activity) context).getWindow();
             window.setStatusBarColor(color);
         }
     }
-    // Pulse animation method
+
+    /**
+     * Plays a pulse animation on the specified view.
+     */
     private void pulseAnimation(View view) {
-        // Scale up
         ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(view, "scaleX", 1.0f, 1.4f);
         ObjectAnimator scaleUpY = ObjectAnimator.ofFloat(view, "scaleY", 1.0f, 1.4f);
-
-        // Scale down
         ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(view, "scaleX", 1.4f, 1.0f);
         ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(view, "scaleY", 1.4f, 1.0f);
 
-        // Set duration for the scaling animations
         scaleUpX.setDuration(150);
         scaleUpY.setDuration(150);
         scaleDownX.setDuration(150);
         scaleDownY.setDuration(150);
 
-        // Combine animations into a set
         AnimatorSet pulseSet = new AnimatorSet();
         pulseSet.play(scaleUpX).with(scaleUpY).before(scaleDownX).with(scaleDownY);
-
-        // Start the pulse animation
         pulseSet.start();
+    }
+
+
+    private void progressBarSetterLeft(View view, String sharedPrefValue, Boolean isFirstStartup){
+
+        TextView textView2 = view.findViewById(R.id.wertBisHeuteBenutztErlaubt2);
+        textView2.setTranslationX(0);
+        textView2.setTranslationY(0);
+        textView2.setText(sharedPrefValue);
+        SharedPreferences sharedPref3 = context.getSharedPreferences("FragmentLeftKey", Context.MODE_PRIVATE);
+        int calcValue;
+        if(isFirstStartup){
+            calcValue = 11;
+        }
+        else {calcValue = sharedPref3.getInt("ProgressInt", 0);
+            Log.d(TAG,"-------------ProgressInt: "+ sharedPref3.getInt("ProgressInt", 0));
+        }
+
+        int absoluteValue = Math.abs(calcValue);
+        ProgressBar progressBar = view.findViewById(R.id.ProgressBarData);
+        progressBar.setProgress(absoluteValue);
+
+        ConstraintLayout frameLayoutTopNew4 = view.findViewById(R.id.FrameLayoutTop3);
+        ConstraintLayout frameLayoutTopOld2 = view.findViewById(R.id.FrameLayoutTop2);
+        ConstraintLayout frameLayoutTop4 = view.findViewById(R.id.FrameLayoutTop);
+
+        // Change the progress bar color based on the calculated value.
+        if (calcValue < 0) {
+            progressBar.setProgressTintList(ColorStateList.valueOf(Color.rgb(191, 64, 72)));
+            frameLayoutTop4.setBackgroundResource(R.drawable.rounded_corners_red);
+        } else {
+            progressBar.setProgressTintList(ColorStateList.valueOf(Color.rgb(19, 174, 75)));
+            frameLayoutTop4.setBackgroundResource(R.drawable.rounded_corners_green);
+        }
+
+        TextView usageTextView = view.findViewById(R.id.usageTextView);
+        usageTextView.setText(absoluteValue + "%");
+
+        // Restore the text view's position from SharedPreferences.
+        if(isFirstStartup){
+
+            int absoluteValue2 = Math.abs(calcValue);
+            progressBar.setProgress(absoluteValue2);
+            usageTextView.setText(absoluteValue + "%");
+            int progress = absoluteValue2;
+            int cappedProgress = Math.min(progress, 20);
+            int width = progressBar.getWidth();
+            int progressWidth = (int) ((cappedProgress / 20.0) * width);
+            if (progress >= 1000) {
+                usageTextView.setX((progressBar.getX() + progressWidth - 230)); // Adjust this value as needed
+                Log.d(TAG, "-- progress > 1000 -- set X value: " + (progressBar.getX() + progressWidth - 300));
+            } else if (progress >= 100) {
+                usageTextView.setX((progressBar.getX() + progressWidth - 200)); // Adjust this value as needed
+                Log.d(TAG, "-- progress > 100 -- set X value: " + (progressBar.getX() + progressWidth - 200));
+            } else if (cappedProgress > 10) {
+                usageTextView.setX((progressBar.getX() + progressWidth - 170));
+                Log.d(TAG, "-- bigger10 -- set X value: " + (progressBar.getX() + progressWidth - 170));
+            } else {
+                usageTextView.setX((progressBar.getX() + progressWidth + 70));
+                Log.d(TAG, "-- smaller10 -- set X value: " + (progressBar.getX() + progressWidth + 70));
+            }
+
+            usageTextView.setY(progressBar.getY() + (progressBar.getHeight() - usageTextView.getHeight()) / 2);
+        }
+        else{
+            usageTextView.setX(sharedPref3.getInt("textView.setXX", 0));
+        }
+
+
+        if(isFirstStartup){
+            usageTextView.setY(450);
+        }
+        else{
+            usageTextView.setY(sharedPref3.getInt("textView.setYY", 0));
+        }
+
+
+
+
     }
 }

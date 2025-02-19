@@ -3,17 +3,30 @@ package com.appdev.data;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SharedViewModel2 extends ViewModel {
-    private static MutableLiveData<String> answerLiveData = new MutableLiveData<>();
+    private final Map<Integer, MutableLiveData<String>> answersMap = new HashMap<>();
 
-    public LiveData<String> getAnswer(int questionNumber) {
-        // Return the LiveData for the specified question number
-        return answerLiveData;
+    public SharedViewModel2() {
+        // Initialize if you have predefined question numbers
+        answersMap.put(1, new MutableLiveData<>());
+        answersMap.put(2, new MutableLiveData<>());
     }
 
-    public static void setAnswer(int questionNumber, String answer) {
-        // Update the LiveData with the provided answer
-        answerLiveData.setValue(answer);
+    public LiveData<String> getAnswer(int questionNumber) {
+        // Ensure we return a LiveData instance even if the key is missing
+        if (!answersMap.containsKey(questionNumber)) {
+            answersMap.put(questionNumber, new MutableLiveData<>());
+        }
+        return answersMap.get(questionNumber);
+    }
+
+    public void setAnswer(int questionNumber, String answer) {
+        if (!answersMap.containsKey(questionNumber)) {
+            answersMap.put(questionNumber, new MutableLiveData<>());
+        }
+        answersMap.get(questionNumber).setValue(answer);
     }
 }

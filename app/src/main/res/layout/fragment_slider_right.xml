@@ -26,28 +26,99 @@
         app:layout_constraintVertical_bias="0.067">
 
 
-        <ScrollView
-            android:layout_width="394dp"
-            android:layout_height="173dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/FrameLayoutTop4"
+            android:layout_width="325dp"
+            android:layout_height="42dp"
+            android:background="@drawable/rounded_corners_black_sharper"
+            android:backgroundTintMode="add"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.872">
 
-            <CalendarView
-                android:id="@+id/calendarView"
-                style="@android:style/Widget.Material.Light.CalendarView"
-                android:layout_width="397dp"
-                android:layout_height="198dp"
+            <ProgressBar
+                android:id="@+id/ProgressBarMonth"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="320dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="16dp"
+                android:indeterminateBehavior="repeat"
+
+                android:indeterminateOnly="false"
+                android:max="100"
+
+                android:min="0"
+                android:mirrorForRtl="false"
+
+                android:progress="100"
+                android:progressBackgroundTint="@color/BackgroundColor"
+                android:progressDrawable="@drawable/progress_drawable"
+                android:progressTint="@color/blueAccent"
                 android:scaleY="1"
-                android:scrollbars="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="1.2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewPercentage"
+                android:layout_width="70dp"
+                android:layout_height="28dp"
+                android:fontFamily="@font/anton"
+
+                android:includeFontPadding="false"
+
+                android:text="TextView"
+
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/ProgressBarMonth"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.913" />
-        </ScrollView>
+                tools:text="54%" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textViewMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/anton"
+            android:text="February"
+            android:textSize="48sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.662"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/anton"
+
+
+            android:text="13."
+            android:textSize="48sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.234"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

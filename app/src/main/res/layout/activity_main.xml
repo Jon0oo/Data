@@ -8,10 +8,6 @@
     tools:context=".MainActivity">
 
 
-
-
-
-
     <EditText
         android:id="@+id/WertMbProMonat"
         style="@style/Widget.Material3.MaterialTimePicker.Display.TextInputEditText"
@@ -54,7 +50,7 @@
         android:layout_width="148dp"
         android:layout_height="53dp"
         android:fontFamily="@font/anton"
-        android:text="@string/TextDataProMonat"
+        android:text="@string/DataPerMonth"
         android:textColor="?attr/actionMenuTextColor"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -93,8 +89,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>
+    <include layout="@layout/dim_overlay_data_per_month_unlimited"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 
     <include layout="@layout/dim_overlay_data_left"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+    <include layout="@layout/dim_overlay_data_left_unlimited"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>
@@ -103,6 +107,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>
+    <include layout="@layout/dim_overlay_progress_bar_unlimited"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+    <include layout="@layout/dim_overlay_day_month"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

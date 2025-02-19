@@ -17,7 +17,7 @@
             android:layout_width="256dp"
             android:layout_height="102dp"
             android:fontFamily="@font/anton"
-            android:text="Reset the data value from the settings app?"
+            android:text="@string/reset_data_value"
             android:textAlignment="center"
             android:textColor="@color/invertedBackgroundColor"
             android:textSize="25sp"
@@ -32,7 +32,7 @@
             android:layout_width="120dp"
             android:layout_height="60dp"
             android:background="@drawable/rounded_corners_black"
-            android:text="  Confirm  "
+            android:text="@string/button_confirm"
 
             android:textColor="@color/invertedBackgroundColor"
             android:textSize="18sp"
@@ -48,7 +48,7 @@
             android:layout_width="120dp"
             android:layout_height="60dp"
             android:background="@drawable/rounded_corners_blue"
-            android:text="  Cancel  "
+            android:text="@string/button_cancel"
 
             android:textColor="@color/invertedBackgroundColor"
             android:textSize="18sp"

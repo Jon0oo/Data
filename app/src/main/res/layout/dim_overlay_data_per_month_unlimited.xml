@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:id="@+id/dimOverlayDataPerMonth"
+    android:id="@+id/dimOverlayDataPerMonthUnlimited"
     android:layout_height="match_parent"
     android:background="#CC000000"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -10,6 +10,22 @@
 
 
 
+    <TextView
+        android:id="@+id/instructionText"
+        android:layout_width="171dp"
+        android:layout_height="151dp"
+        android:layout_gravity="center"
+        android:fontFamily="@font/anton"
+        android:text="@string/dim_overlay_4"
+        android:textColor="@color/FontColorForExplaining"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.887"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.522" />
 
 
     <TextView
@@ -27,7 +43,7 @@
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="40sp"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:paddingBottom="2sp"
         android:clickable="false"
         android:focusable="false"
@@ -37,28 +53,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.345" />
-
-    <!-- Cutout View -->
-
-    <!-- Instruction Text -->
-
-
-    <TextView
-        android:id="@+id/instructionText"
-        android:layout_width="171dp"
-        android:layout_height="151dp"
-        android:layout_gravity="center"
-        android:fontFamily="@font/anton"
-        android:text="@string/dim_overlay_3"
-        android:textColor="@color/FontColorForExplaining"
-        android:textSize="18sp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.887"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.522" />
 
     <Button
         android:id="@+id/buttonNext"

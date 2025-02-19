@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">Data</string>
+    <string name="data_left">Noch übrig</string>
+    <string name="data_used">Genutzt</string>
+    <string name="DataPerMonth">Datenvolumen pro Monat</string>
+    <string name="Gb">Gb</string>
+    <string name="mb">Mb</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="button_decline">Ablehnen</string>
+    <string name="button_settings">Einstellungen</string>
+    <string name="button_next">  Weiter   </string>
+    <string name="button_finish">  Schließen  </string>
+    <string name="button_confirm">Bestätigen</string>
+    <string name="button_cancel">  Abbrechen  </string>
+    <string name="button_change_language">  Sprache ändern  </string>
+    <string name="button_english">  &#x1F1EC;&#x1F1E7; </string>
+    <string name="button_german">  &#x1F1E9;&#x1F1EA; </string>
+    <string name="button_unlimited_data_switch">  Unbegrenzt Datenvolumen aus  </string>
+    <string name="button_reset_start_input">  Start Input zurücksetzen  </string>
+    <string name="button_explanation">  Erklärung  </string>
+    <string name="reset_data_value">Soll der Wert aus den Einstellungen zurückgesetzt werden?</string>
+
+
+
+    <string name="description_enable_usage_access">Die App benötigt die Erlaubnis zur Datennutzungserfassung. Bitte erteile sie über die Schaltfläche &quot;Einstellungen&quot;</string>
+    <string name="description_get_mobile_data_usage">Bitte trage deinen aktuellen mobilen Datenverbrauch unten ein, indem du auf die Schaltfläche &quot;Einstellungen&quot; klickst.</string>
+
+
+    <string name="dim_overlay_1">Dies zeigt an, wie viel Datenvolumen du heute noch nutzen kannst, um innerhalb deines monatlichen Limits zu bleiben.</string>
+    <string name="dim_overlay_2">Dies zeigt an, wie viel Datenvolumen du diesen Monat bereits verbraucht hast.</string>
+    <string name="dim_overlay_3">Gib dein monatliches Datenlimit ein, um die Berechnung zu starten.</string>
+    <string name="dim_overlay_4">Wenn du einen mobilen Datentarif mit unbegrenztem Datenvolumen nutzt, kannst du diesen Modus verwenden, um deine Datennutzung zu verfolgen.</string>
+    <string name="dim_overlay_5">Dies zeigt dir den aktuellen Tag und Monat sowie den prozentualen Anteil des bereits vergangenen Monats an.</string>
+    <string name="dim_overlay_6">Die Fortschrittsanzeige hilft dir, deine Datennutzung im Blick zu behalten. Sie verwendet Farben, um zu zeigen, ob du im Rahmen deines monatlichen Limits bleibst oder es überschreitest, und gibt dir so einen klaren Überblick über deine aktuelle Situation.</string>
+    <string name="dim_overlay_7">Diese Fortschrittsanzeige zeigt dir, ob deine Nutzung in diesem Monat über oder unter der des letzten Monats liegt. Sie verwendet Farben, um anzuzeigen, ob du darüber oder darunter liegst.</string>
+
+
+
+
+
+
+
+    <string name="app_widget_description">This is an app widget description</string>
+    <string name="description_disable_battery_optimisation">Bitte deaktiviere die Akkuoptimierung, damit die App wichtige Aufgaben im Hintergrund ausführen kann. Wähle &quot;Alle Apps&quot; und suche nach &quot;DATA&quot;.</string>
+
+
+</resources>

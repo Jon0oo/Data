@@ -24,7 +24,7 @@ public class FragmentLeft extends Fragment {
     private static final String PROGRESS_INT_KEY = "ProgressInt";
     private static final String TEXT_VIEW_X_KEY = "textView.setXX";
     private static final String TEXT_VIEW_Y_KEY = "textView.setYY";
-
+    //TODO update progressbar if unlimited mode changes
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_slider_left, container, false);
@@ -37,35 +37,62 @@ public class FragmentLeft extends Fragment {
 
         final boolean[] isInitialized = {false};
 
-        viewModel.getAnswer(1).observe(getViewLifecycleOwner(), answer2 -> {
-            if (!isInitialized[0]) {
-                isInitialized[0] = true;
-                return; // Skip the first update
-            }
-            if (answer2 != null) {
-                updateProgress(answer2, progressBar, usageTextView, frameLayoutTop2);
-            } else {
-                Log.d(TAG, "answer2 is empty");
-            }
+        viewModel.getAnswer(1).observe(getViewLifecycleOwner(), calcValueFromViewModel -> {
+            SharedPreferences sharedPrefs = getActivity().getSharedPreferences("UnlimitedFlag", Context.MODE_PRIVATE);
+            String isFlagOn = sharedPrefs.getString("UnlimitedFlagValue2","off");
+              if (!isInitialized[0]) {
+                    isInitialized[0] = true;
+                    return; // Skip the first update
+              }
+              if (calcValueFromViewModel != null) {
+                   updateProgress(isFlagOn, calcValueFromViewModel, progressBar, usageTextView, frameLayoutTop2);
+               } else {
+                   Log.d(TAG, "answer2 is empty");
+               }
+
+
+
         });
+
+
+
+        viewModel.getAnswer(2).observe(getViewLifecycleOwner(), isFlagOn -> {
+
+
+
+
+            String calcValueFromViewModelFromFlag = "0";
+            updateProgress(isFlagOn,calcValueFromViewModelFromFlag, progressBar, usageTextView, frameLayoutTop2);
+
+
+        });
+
+
+
 
         loadInitialProgress(progressBar, usageTextView, frameLayoutTop2);
         return view;
     }
 
-    private void updateProgress(String answer2, ProgressBar progressBar, TextView usageTextView, ConstraintLayout frameLayoutTop2) {
-        int calcValue = parseAnswer(answer2);
+    private void updateProgress(String isFlagOn, String calcValueFromViewModel, ProgressBar progressBar, TextView usageTextView, ConstraintLayout frameLayoutTop2) {
+        int calcValue = parseAnswer(calcValueFromViewModel);
         if (calcValue == Integer.MIN_VALUE) return; // Error in parsing
 
-        int absoluteValue = Math.abs(calcValue);
-        progressBar.setProgress(absoluteValue);
-        updateProgressBarColor(calcValue, progressBar, frameLayoutTop2);
-        usageTextView.setText(absoluteValue + "%");
-        Log.d(TAG, "text on textView: " + (absoluteValue + "%"));
 
-        saveProgressToPreferences(calcValue);
-        adjustTextPosition(absoluteValue, usageTextView, progressBar);
-    }
+        if (isFlagOn.equals("on")){
+            calcValue = 0;
+        }
+
+            int absoluteValue = Math.abs(calcValue);
+            progressBar.setProgress(absoluteValue);
+            updateProgressBarColor(calcValue, progressBar, frameLayoutTop2);
+            usageTextView.setText(absoluteValue + "%");
+            Log.d(TAG, "text on textView: " + (absoluteValue + "%"));
+
+            saveProgressToPreferences(calcValue);
+            adjustTextPosition(absoluteValue, usageTextView, progressBar);
+        }
+
 
     private void loadInitialProgress(ProgressBar progressBar, TextView usageTextView, ConstraintLayout frameLayoutTop2) {
         SharedPreferences sharedPref = getContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);

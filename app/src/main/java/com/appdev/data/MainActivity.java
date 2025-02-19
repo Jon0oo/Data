@@ -83,14 +83,22 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPref.edit();
         Activity activity = this;
 
-
+        SharedViewModel2 viewModel = new ViewModelProvider(this).get(SharedViewModel2.class);
         // introducing the on click listener for the three dots
         ImageView threeDots = findViewById(R.id.threeDots);
         threeDots.setOnClickListener(new View.OnClickListener() {
-            OverlayHelper overlayHelper = new OverlayHelper(activity);
+
+            OverlayHelper overlayHelper = new OverlayHelper(activity, viewModel);
              @Override
              public void onClick(View view) {
-                 overlayHelper.showPopupWindow(view);
+                 SharedPreferences sharedPrefsForExplain = getSharedPreferences("isExplaining", Context.MODE_PRIVATE);
+                 Log.d(TAG,"isExplaining is: " + sharedPrefsForExplain.getBoolean("isExplaining", false));
+
+                 if(!sharedPrefsForExplain.getBoolean("isExplaining", false)){
+
+                    overlayHelper.showPopupWindow(view);
+
+                        }
                    }
              });
 
@@ -150,6 +158,31 @@ public class MainActivity extends AppCompatActivity {
         // introduce .xml objects to java
 
 
+
+        //setting Answer of ViewModel to force update fragment middle at startup to display the right text
+        SharedPreferences sharedPrefsForFragmentUpdate = getSharedPreferences("UnlimitedFlag",MODE_PRIVATE);
+        SharedViewModel3.setAnswer(1, sharedPrefsForFragmentUpdate.getString("UnlimitedFlagValue2", "off"));
+        calculate.calculateDataAllowedDataUsedDifference(context);
+
+
+
+        double calculatedValueForFrag = calculate.calculateDataAllowedDataUsedDifference(context);
+        DecimalFormat dfForFrag = new DecimalFormat("#.##");
+        String calculatedValueDecimalFormatForFrag = dfForFrag.format(calculatedValueForFrag * 0.001);
+        SharedViewModel.setAnswer(1, calculatedValueDecimalFormatForFrag);
+
+
+
+
+
+
+
+
+
+
+
+
+
         // starting the tracking service for mobile data
         Intent serviceIntent = new Intent(this, DataTrackingService.class);
         startService(serviceIntent);
@@ -169,6 +202,32 @@ public class MainActivity extends AppCompatActivity {
         };
 
 
+
+
+        SharedPreferences prefs = getSharedPreferences("FirstStartPrefs", MODE_PRIVATE);
+
+
+        Button buttonDebug = (Button) findViewById(R.id.button2);
+        buttonDebug.setOnClickListener(v -> {
+            Log.d(TAG,"Debug button pressed!");
+            prefs.edit().putBoolean("firstStart", true).apply();
+        });
+
+        SharedPreferences sharedPrefForExplain = context.getSharedPreferences("UnlimitedFlag", Context.MODE_PRIVATE);
+        boolean isFirstStartupExplanationAborted = sharedPrefForExplain.getBoolean("isFirstStartupExplanationAborted",true);
+        boolean isFirstStart = prefs.getBoolean("firstStart", true);
+        Log.d(TAG,"isFirstStart: "+ isFirstStart + "isFristStartupExplanationAborted: "+ isFirstStartupExplanationAborted);
+        if (isFirstStart || isFirstStartupExplanationAborted) {
+            OverlayHelper overlayHelper = new OverlayHelper(this, viewModel);
+            Boolean isFirstStartup = true;
+            overlayHelper.showExplanation(isFirstStartup);
+            prefs.edit().putBoolean("firstStart", false).apply();
+        }
+
+
+
+
+
         //introduces shared preference early to set the wertMbProMonat value at startup
 
 
@@ -184,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
 
         final String[] wertMbProMonat = {"0"};
         EditText finalMbProMonat = MbProMonat;
+        SharedViewModel2 SharedViewModel2 = new ViewModelProvider(this).get(SharedViewModel2.class);
         MbProMonat.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -244,6 +304,7 @@ public class MainActivity extends AppCompatActivity {
                 DecimalFormat df = new DecimalFormat("#.##");
                 String calculatedValueDecimalFormat = df.format(calculatedValue * 0.001);
                 SharedViewModel.setAnswer(1, calculatedValueDecimalFormat);
+
                 SharedViewModel2.setAnswer(1, calculatedValueDecimalFormat);
 
 

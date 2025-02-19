@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:id="@+id/dimOverlayProgressBar"
+    android:id="@+id/dimOverlayProgressBarUnlimited"
     android:layout_height="match_parent"
     android:background="#CC000000"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -196,7 +196,7 @@
         android:layout_height="312dp"
         android:layout_gravity="center"
         android:fontFamily="@font/anton"
-        android:text="@string/dim_overlay_6"
+        android:text="@string/dim_overlay_7"
         android:textColor="@color/FontColorForExplaining"
         android:textSize="18sp"
         android:visibility="visible"

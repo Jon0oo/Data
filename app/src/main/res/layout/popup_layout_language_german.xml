@@ -7,13 +7,12 @@
     android:padding="8dp">
 
 
-
     <Button
-        android:id="@+id/ButtonToggleUnlimited"
+        android:id="@+id/ButtonChangeLanguageEn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_unlimited_data_switch"
-
+        android:text="@string/button_english"
+        android:textSize="35dp"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
 
@@ -21,42 +20,26 @@
         android:background="@drawable/rounded_corners_black"
         android:layout_marginBottom="8dp"/>
 
-    <Button
-        android:id="@+id/ButtonReset"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_reset_start_input"
-
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-
-        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
         android:background="@drawable/rounded_corners_black"
-        android:textColor="@color/invertedBackgroundColor" />
+        android:padding="2dp">
 
 
     <Button
-        android:id="@+id/ButtonChangeLanguage"
+        android:id="@+id/ButtonChangeLanguageDe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_change_language"
+        android:background="@drawable/rounded_corners_green"
+        android:text="@string/button_german"
+        android:textSize="35dp"
 
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-
-        android:textColor="@color/invertedBackgroundColor"
-        android:background="@drawable/rounded_corners_black"
-        android:layout_marginBottom="8dp"/>
-
-    <Button
-        android:id="@+id/ButtonExplain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_corners_black"
-        android:text="@string/button_explanation"
 
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
 
         android:textColor="@color/invertedBackgroundColor" />
+</LinearLayout>
 </LinearLayout>

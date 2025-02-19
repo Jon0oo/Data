@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- fragment_screen_slide_page.xml -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:id="@+id/dimOverlayProgressBar"
-    android:layout_height="match_parent"
+    android:id="@+id/dimOverlayDayMonth"
     android:background="#CC000000"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollIndicators="top|left|bottom|start|end|right"
+    android:scrollbarStyle="insideInset"
+    android:scrollbars="horizontal|vertical">
 
+<!-- here starts the new added layers -->
 
-    <!-- Cutout View -->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/FrameLayoutTop3"
+        android:id="@+id/FrameLayoutProgressBarLeft"
         android:layout_width="405dp"
         android:layout_height="185dp"
         android:background="@drawable/rounded_corners_white"
         android:backgroundTintMode="add"
         android:orientation="vertical"
-        android:visibility="gone"
+        android:visibility="visible"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,7 +30,7 @@
         app:layout_constraintVertical_bias="0.022">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/FrameLayoutTop4"
+            android:id="@+id/FrameLayoutProgressBarLeftLayer2"
             android:layout_width="396dp"
             android:layout_height="175dp"
             android:background="@drawable/rounded_corners_white"
@@ -43,14 +47,14 @@
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout2"
+                android:id="@+id/FrameLayoutProgressBarLeftLayer3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/rounded_corners_white">
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/FrameLayoutTop"
+                    android:id="@+id/FrameLayoutProgressBarLeftLayer4"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/rounded_corners"
@@ -124,13 +128,13 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
 
-        android:id="@+id/FrameLayoutTop2"
+        android:id="@+id/FrameLayoutDataLeft"
         android:layout_width="396dp"
         android:layout_height="175dp"
         android:background="@drawable/rounded_corners_blue_white_border"
         android:backgroundTintMode="add"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.466"
@@ -190,13 +194,125 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+<!-- here end the new added layers -->
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/FrameLayoutBlueBoxMonth"
+        android:layout_width="396dp"
+        android:layout_height="175dp"
+        android:background="@drawable/rounded_corners_blue_white_border"
+        android:backgroundTintMode="add"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.022">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/FrameLayoutProgressBarContainerMonth"
+            android:layout_width="325dp"
+            android:layout_height="42dp"
+            android:background="@drawable/rounded_corners_black_sharper"
+            android:backgroundTintMode="add"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.872">
+
+            <ProgressBar
+                android:id="@+id/ProgressBarMonth"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="320dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="16dp"
+                android:indeterminateBehavior="repeat"
+
+                android:indeterminateOnly="false"
+                android:max="100"
+
+                android:min="0"
+                android:mirrorForRtl="false"
+
+                android:progress="100"
+                android:progressBackgroundTint="@color/BackgroundColor"
+                android:progressDrawable="@drawable/progress_drawable"
+                android:progressTint="@color/blueAccent"
+                android:scaleY="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewPercentage"
+                android:layout_width="70dp"
+                android:layout_height="28dp"
+                android:fontFamily="@font/anton"
+
+                android:includeFontPadding="false"
+
+                android:text="TextView"
+
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/ProgressBarMonth"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="54%" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textViewMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/anton"
+            android:text="February"
+            android:textSize="48sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.662"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/anton"
+
+
+            android:text="13."
+            android:textSize="48sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.234"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <TextView
         android:id="@+id/instructionText"
-        android:layout_width="199dp"
-        android:layout_height="312dp"
+        android:layout_width="203dp"
+        android:layout_height="211dp"
         android:layout_gravity="center"
         android:fontFamily="@font/anton"
-        android:text="@string/dim_overlay_6"
+        android:text="@string/dim_overlay_5"
         android:textColor="@color/FontColorForExplaining"
         android:textSize="18sp"
         android:visibility="visible"
@@ -207,18 +323,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.564" />
 
+
     <Button
-        android:id="@+id/buttonNext"
+        android:id="@+id/buttonNext3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_corners_blue"
-        android:text="@string/button_next"
+        android:clickable="true"
+        android:text="@string/button_finish"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.916"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.965" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

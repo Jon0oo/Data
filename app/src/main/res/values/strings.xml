@@ -1,13 +1,52 @@
 <resources>
     <string name="app_name">Data</string>
-    <string name="wertÜbrig">Data left</string>
-    <string name="TextDataProMonat">Data per month</string>
+    <string name="data_left">Data left</string>
+    <string name="data_used">Data used</string>
+    <string name="DataPerMonth">Data per month</string>
     <string name="Gb">Gb</string>
     <string name="mb">Mb</string>
     <string name="title_activity_splash_screen">SplashScreen</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="button_decline">Decline</string>
+    <string name="button_settings">Settings</string>
+    <string name="button_next">  Next   </string>
+    <string name="button_finish">  Finish  </string>
+    <string name="button_english">  &#x1F1EC;&#x1F1E7; </string>
+    <string name="button_german">  &#x1F1E9;&#x1F1EA;  </string>
+
+
+    <string name="button_change_language">  Change language  </string>
+    <string name="button_confirm">Confirm</string>
+    <string name="button_cancel">  Cancel  </string>
+    <string name="button_unlimited_data_switch">  Turn on unlimited data  </string>
+    <string name="button_reset_start_input">  Reset Start Input  </string>
+    <string name="button_explanation">  Explanation  </string>
+    <string name="reset_data_value">Reset the data value from the settings app?</string>
+
+
+
+    <string name="description_enable_usage_access">To provide a functioning user experience the app needs to ask you for data usage tracking permission. Please use the &quot;Settings&quot; button to give permission.</string>
+    <string name="description_get_mobile_data_usage">Please enter your current mobile data usage down below by checking with the button &quot;Settings&quot;</string>
+
+
+    <string name="dim_overlay_1">This indicates the remaining data you can use today to stay within your monthly limit.</string>
+    <string name="dim_overlay_2">This indicates the data you have already used up this month.</string>
+    <string name="dim_overlay_3">Enter your monthly data limit to start the calculation.</string>
+    <string name="dim_overlay_4">If you use a mobile data plan with unlimited data, you can use this mode to track your data usage.</string>
+    <string name="dim_overlay_5">This shows you the current day and month and how much of the current month has already passed in a percentage.</string>
+    <string name="dim_overlay_6">The progress bar helps you see how well you\'re managing your data usage. It uses color to show if you\'re on track or exceeding your monthly limit, giving you a clear picture of your current situation.</string>
+    <string name="dim_overlay_7">The progress bar shows you if your usage in this month is over or under the usage of lasts month. It uses color to indicate if you are above or under.</string>
+
+
+
+
+
+
+
     <string name="app_widget_description">This is an app widget description</string>
+    <string name="description_disable_battery_optimisation">Please disable battery optimization to allow the app to run essential tasks in the background. Select &quot;all Apps&quot; and search for &quot;DATA&quot;
+
+</string>
 </resources>
